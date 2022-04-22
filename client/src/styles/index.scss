@@ -1,0 +1,17 @@
+@charset "utf-8";
+@import "fonts/fonts";
+@import "base/typography";
+@import "base/base";
+@import "mixins/mixins";
+
+body {
+  background-color: $color-bg-body;
+  min-width: 280px;
+}
+
+* {
+  box-sizing: border-box;
+  font-family: $font-main;
+  margin: 0;
+  padding: 0;
+}

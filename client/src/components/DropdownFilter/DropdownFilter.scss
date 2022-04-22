@@ -1,0 +1,20 @@
+.dropdown {
+  position: relative;
+
+  &__title {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+  }
+
+  &__field {
+    border-radius: 10px;
+    border: 2px solid darkgray;
+    cursor: pointer;
+    height: 30px;
+    padding: 5px 10px;
+    width: 30vw;
+  }
+}

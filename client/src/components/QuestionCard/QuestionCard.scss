@@ -1,0 +1,13 @@
+@import "src/styles/base/shadows";
+@import "src/styles/base/colors";
+
+.card {
+  &__wrapper {
+    background-color: $color-white;
+    border-radius: 20px;
+    box-shadow: $box-shadow-base;
+    margin: 50px 20px 0 20px;
+    padding: 20px;
+    position: relative;
+  }
+}

@@ -1,0 +1,39 @@
+@import "src/styles/base/colors";
+@import "src/styles/base/shadows";
+
+.login {
+  align-items: center;
+  display: flex;
+  height: 100vh;
+  justify-content: center;
+  width: 100vw;
+
+  &__form {
+    background-color: $color-white;
+    border-radius: 8px;
+    box-shadow: $box-shadow-base;
+    padding: 20px;
+
+    &__input {
+      margin-top: 20px;
+      text-align: center;
+
+      input {
+        border: 1px solid $color-black;
+        border-radius: 5px;
+        padding: 5px 10px;
+      }
+    }
+
+    &__button {
+      margin-top: 20px;
+      text-align: center;
+
+      button {
+        border: none;
+        cursor: pointer;
+        font-weight: bold;
+      }
+    }
+  }
+}

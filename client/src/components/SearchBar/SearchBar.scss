@@ -1,0 +1,30 @@
+@import "src/styles/base/shadows";
+@import "src/styles/base/colors";
+
+// .visually-hidden {
+//     clip: rect(0 0 0 0);
+//     clip-path: inset(50%);
+//     height: 1px;
+//     overflow: hidden;
+//     position: absolute;
+//     white-space: nowrap;
+//     width: 1px;
+// }
+
+.search-bar {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 50px;
+
+  &__input {
+    border-radius: 10px;
+    border: 2px solid darkgray;
+    //box-shadow: $box-shadow-base;
+    font-size: 20px;
+    height: 50px;
+    padding: 5px 10px;
+    width: 50vw;
+  }
+}

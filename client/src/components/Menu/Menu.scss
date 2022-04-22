@@ -1,0 +1,20 @@
+.menu {
+  position: absolute;
+  right: 30px;
+
+  &__content {
+    background-color: white;
+    border: 1px solid darkgray;
+    border-radius: 5px;
+    list-style: none;
+    min-width: 200px;
+    position: absolute;
+    right: -10px;
+    top: 20px;
+    z-index: 30;
+
+    li {
+      padding: 15px;
+    }
+  }
+}

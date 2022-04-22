@@ -8,9 +8,6 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    positionId: {
-      type: DataTypes.STRING,
-    },
     programId: {
       type: DataTypes.STRING,
     },
@@ -18,6 +15,14 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
     },
   });
+
+  Questions.associate = (models) => {
+    Questions.belongsToMany(models.Positions, {
+      through: "question_position",
+      as: "positions",
+      foreignKey: "questionId"
+    });
+  };
 
   return Questions;
 };
