@@ -1,10 +1,16 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useContext } from "react";
 import PropTypes from "prop-types";
 import "./Menu.scss";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../../helpers/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const Menu = (props) => {
   let menuRef = useRef();
+
+  const { isLoggedIn, logout } = useContext(AuthContext);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleOutsideClick = (e) => {
@@ -27,12 +33,23 @@ const Menu = (props) => {
     };
   });
 
+  const onLogout = () => {
+    logout();
+    navigate("/");
+  };
+
+  console.log(isLoggedIn);
+
   return (
     <div className="menu" ref={menuRef}>
       <ul className="menu__content">
-        <Link to={`/login`} className="link">
-          <li>Login</li>
-        </Link>
+        {!isLoggedIn ? (
+          <Link to={`/login`} className="link">
+            <li>Login</li>
+          </Link>
+        ) : (
+          <button onClick={onLogout}>Logout</button>
+        )}
         <Link to={`/userguide`} className="link">
           <li>Naudojimosi gidas</li>
         </Link>

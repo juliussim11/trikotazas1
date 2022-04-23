@@ -17,6 +17,16 @@ const QuestionPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    axios
+      .put(`http://localhost:5000/questions/${id}`, questionData, {
+        headers: {
+          accessToken: localStorage.getItem("accessToken"),
+        },
+      })
+      .then(() => {
+        alert("Question Updated");
+      });
   };
 
   const handleChange = (e) => {

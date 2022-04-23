@@ -16,8 +16,33 @@ router.get("/byId/:id", async (req, res) => {
 
 router.post("/", validateToken, async (req, res) => {
   const question = req.body;
-  await Questions.create(question);
-  res.json(question);
+  const newQuestion = await Questions.create(question);
+  res.json(newQuestion);
+});
+
+router.delete("/:id", validateToken, async (req, res) => {
+  const id = req.params.id;
+
+  await Questions.destroy({
+    where: {
+      id: id,
+    },
+  });
+
+  res.json("DELETED SUCCESFULLY");
+});
+
+router.put("/:id", validateToken, async (req, res) => {
+  const id = req.params.id;
+  const data = req.body;
+
+  await Questions.update(data, {
+    where: {
+      id: id,
+    },
+  });
+
+  res.json("UPDATED SUCCESFULLY");
 });
 
 module.exports = router;

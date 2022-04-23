@@ -61,9 +61,9 @@ const Administrator = () => {
       .then((response) => {
         if (response.data.error) {
           console.log(response.data.error);
-        } else {
-          console.log("IT WORKED");
+          return;
         }
+        setListOfQuestions([...listOfQuestions, response.data]);
       });
     resetUserInputs();
   };

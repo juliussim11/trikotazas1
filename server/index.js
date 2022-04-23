@@ -12,6 +12,10 @@ const questionRouter = require("./routes/Questions");
 app.use("/questions", questionRouter);
 const positionRouter = require("./routes/Positions");
 app.use("/positions", positionRouter);
+const programRouter = require("./routes/Programs");
+app.use("/programs", programRouter);
+const departamentRouter = require("./routes/Departaments");
+app.use("/departaments", departamentRouter);
 const administratorRouter = require("./routes/Administrator");
 app.use("/administrator", administratorRouter);
 

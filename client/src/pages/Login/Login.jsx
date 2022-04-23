@@ -1,7 +1,6 @@
 import React, { useState, useContext } from "react";
 import { Navigate } from "react-router-dom";
 import "./Login.scss";
-import axios from "axios";
 import { AuthContext } from "../../helpers/AuthContext";
 
 const Login = () => {

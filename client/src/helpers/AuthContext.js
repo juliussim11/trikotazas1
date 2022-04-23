@@ -8,9 +8,7 @@ const AuthContext = createContext({
 });
 
 const AuthContextProvider = (props) => {
-  const [userIsLoggedIn, setUserIsLoggedIn] = useState(
-    localStorage.getItem("accessToken")
-  );
+  const [userIsLoggedIn, setUserIsLoggedIn] = useState(false);
 
   const handleLogin = (data) => {
     axios
