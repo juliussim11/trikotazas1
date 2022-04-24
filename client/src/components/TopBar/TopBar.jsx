@@ -3,7 +3,7 @@ import "./TopBar.scss";
 import Logo from "../../assets/header-logo.svg";
 import MenuIcon from "../../assets/menu_icon.svg";
 import Menu from "../Menu/Menu";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 const TopBar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -16,9 +16,9 @@ const TopBar = () => {
     <header className="topbar">
       <div className="topbar__content">
         <div className="topbar__content__invisible-item" />
-        <Link to={`/`}>
+        <NavLink to="/">
           <img className="topbar__content__logo" src={Logo} />
-        </Link>
+        </NavLink>
         <div onClick={handleMenuClick}>
           <img className="topbar__content__menu" src={MenuIcon} />
         </div>
