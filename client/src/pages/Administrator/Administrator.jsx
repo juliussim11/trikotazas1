@@ -44,6 +44,23 @@ const Administrator = () => {
   };
   console.log(listOfQuestions);
 
+  const handleDelete = (id) => {
+    axios
+      .delete(`http://localhost:5000/questions/${id}`, {
+        headers: {
+          accessToken: localStorage.getItem("accessToken"),
+        },
+      })
+      .then(() => {
+        alert("Question Deleted");
+        setListOfQuestions(
+          listOfQuestions.filter((val) => {
+            return val.id != id;
+          })
+        );
+      });
+  };
+
   const resetUserInputs = () => {
     setQuestionData({
       question: "",
@@ -102,6 +119,9 @@ const Administrator = () => {
               key={question.id}
               post={question}
               linkTo={`question/${question.id}`}
+              handleDelete={() => {
+                handleDelete(question.id);
+              }}
             />
           ))}
       </div>

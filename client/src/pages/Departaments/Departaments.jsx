@@ -1,21 +1,23 @@
 import React, { useEffect, useState } from "react";
-import Departament from "../../components/Departament/Departament";
+import FilterUpdate from "../../components/FilterUpdate/FilterUpdate";
 import FilterForm from "../../components/FilterForm/FilterForm";
 import "./Departaments.scss";
 import axios from "axios";
 
 const Departaments = () => {
   const [listOfDepartaments, setListOfDepartaments] = useState([]);
+  const [updatedDepartament, setUpdatedDepartament] = useState({
+    title: "",
+  });
+  const [departament, setDepartament] = useState({
+    title: "",
+  });
 
   useEffect(() => {
     axios.get("http://localhost:5000/departaments").then((response) => {
       setListOfDepartaments(response.data);
     });
   }, []);
-
-  const [departament, setDepartament] = useState({
-    title: "",
-  });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -45,10 +47,40 @@ const Departaments = () => {
       title: "",
     });
   };
+
+  const handleDelete = (id) => {
+    axios
+      .delete(`http://localhost:5000/departaments/${id}`, {
+        headers: {
+          accessToken: localStorage.getItem("accessToken"),
+        },
+      })
+      .then(() => {
+        alert("Program Deleted");
+        setListOfDepartaments(
+          listOfDepartaments.filter((val) => {
+            return val.id != id;
+          })
+        );
+      });
+  };
+
+  const handleUpdate = async (id) => {
+    axios
+      .put(`http://localhost:5000/departaments/${id}`, updatedDepartament, {
+        headers: {
+          accessToken: localStorage.getItem("accessToken"),
+        },
+      })
+      .then(() => {
+        alert("Program Updated");
+      });
+  };
+
   return (
     <div>
       <FilterForm
-        title="DEPARTAMENT"
+        title="ADD DEPARTAMENT"
         handleSubmit={handleSubmit}
         button="ADD DEPARTAMENT"
         inputName="title"
@@ -59,10 +91,17 @@ const Departaments = () => {
       <div>
         {listOfDepartaments.length > 0 &&
           listOfDepartaments.map((departament) => (
-            <Departament
+            <FilterUpdate
               key={departament.id}
-              id={departament.id}
-              value={departament.title}
+              initialValue={departament.title}
+              name="title"
+              setFilterData={setUpdatedDepartament}
+              handleUpdate={() => {
+                handleUpdate(departament.id);
+              }}
+              handleDelete={() => {
+                handleDelete(departament.id);
+              }}
             />
           ))}
       </div>

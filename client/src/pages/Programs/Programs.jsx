@@ -1,25 +1,24 @@
 import React, { useEffect, useState } from "react";
-import Program from "../../components/Program/Program";
+import FilterUpdate from "../../components/FilterUpdate/FilterUpdate";
 import FilterForm from "../../components/FilterForm/FilterForm";
 import "./Programs.scss";
 import axios from "axios";
 
 const Programs = () => {
   const [listOfPrograms, setListOfPrograms] = useState([]);
-  const [updateProgram, setUpdateProgram] = useState({
+  const [updatedProgram, setUpdatedProgram] = useState({
     title: "",
   });
-  console.log("UPDATE DATA: ", updateProgram);
+  const [program, setProgram] = useState({
+    title: "",
+  });
+  console.log("UPDATE DATA: ", updatedProgram);
 
   useEffect(() => {
     axios.get("http://localhost:5000/programs").then((response) => {
       setListOfPrograms(response.data);
     });
   }, []);
-
-  const [program, setProgram] = useState({
-    title: "",
-  });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -68,7 +67,7 @@ const Programs = () => {
 
   const handleUpdate = async (id) => {
     axios
-      .put(`http://localhost:5000/programs/${id}`, updateProgram, {
+      .put(`http://localhost:5000/programs/${id}`, updatedProgram, {
         headers: {
           accessToken: localStorage.getItem("accessToken"),
         },
@@ -81,7 +80,7 @@ const Programs = () => {
   return (
     <div>
       <FilterForm
-        title="PROGRAM"
+        title="ADD PROGRAM"
         handleSubmit={handleSubmit}
         button="ADD PROGRAM"
         inputName="title"
@@ -92,14 +91,12 @@ const Programs = () => {
       <div>
         {listOfPrograms.length > 0 &&
           listOfPrograms.map((program) => (
-            <Program
+            <FilterUpdate
               key={program.id}
-              id={program.id}
-              value={program.title}
+              initialValue={program.title}
               name="title"
-              //   handleChange={(programData) => setUpdateProgram(programData)}
-              handleUpdate={(programData) => {
-                setUpdateProgram(programData);
+              setFilterData={setUpdatedProgram}
+              handleUpdate={() => {
                 handleUpdate(program.id);
               }}
               handleDelete={() => {
