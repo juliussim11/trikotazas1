@@ -7,7 +7,7 @@ import "./Home.scss";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
-const Home = (props) => {
+const Home = () => {
   const [query, setQuery] = useState("");
   const [programa, setPrograma] = useState("");
   const [skyrius, setSkyrius] = useState("");

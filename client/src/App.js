@@ -6,6 +6,9 @@ import PageNotFound from "./pages/PageNotFound/PageNotFound";
 import Login from "./pages/Login/Login";
 import Naudojimasis from "./pages/Naudojimasis/Naudojimasis";
 import Administrator from "./pages/Administrator/Administrator";
+import Positions from "./pages/Positions/Positions";
+import Programs from "./pages/Programs/Programs";
+import Departaments from "./pages/Departaments/Departaments";
 import { AuthContext } from "./helpers/AuthContext";
 
 function App() {
@@ -25,6 +28,9 @@ function App() {
               path="/administrator/question/:id"
               element={<QuestionPage />}
             />
+            <Route path="/positions" element={<Positions />} />
+            <Route path="/programs" element={<Programs />} />
+            <Route path="/departaments" element={<Departaments />} />
           </>
         )}
         <Route path="/question/:id" element={<QuestionPage />} />

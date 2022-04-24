@@ -7,7 +7,6 @@ const QuestionPage = () => {
   const [questionData, setQuestionData] = useState({});
 
   const { id } = useParams();
-  console.log(id);
 
   useEffect(() => {
     axios.get(`http://localhost:5000/questions/byId/${id}`).then((response) => {
@@ -36,7 +35,6 @@ const QuestionPage = () => {
       [name]: value,
     });
   };
-  console.log(id);
   console.log("POST DATA: ", questionData);
 
   return (

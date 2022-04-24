@@ -1,0 +1,48 @@
+@import "src/styles/base/shadows";
+@import "src/styles/base/colors";
+@import "../../styles/mixins";
+
+.form {
+  &__wrapper {
+    align-items: center;
+    background-color: $color-white;
+    border-radius: 20px;
+    box-shadow: $box-shadow-base;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 50px 20px;
+    padding: 20px;
+
+    @include tablet-s {
+      margin: 10px;
+      width: 100%;
+    }
+    @include mobile {
+      margin: 10px;
+      width: 100vw;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+    }
+
+    input {
+      border-radius: 7px;
+      border: 1px solid grey;
+      margin-bottom: 20px;
+      padding: 5px;
+    }
+
+    &__button {
+      text-align: center;
+
+      button {
+        border-radius: 7px;
+        border: 1px solid grey;
+        cursor: pointer;
+        padding: 5px;
+      }
+    }
+  }
+}

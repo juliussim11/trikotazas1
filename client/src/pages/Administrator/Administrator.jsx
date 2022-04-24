@@ -4,43 +4,18 @@ import { Editor } from "@tinymce/tinymce-react";
 import SearchBar from "../../components/SearchBar/SearchBar";
 import TopBar from "../../components/TopBar/TopBar";
 import QuestionCard from "../../components/QuestionCard/QuestionCard";
+import FilterForm from "../../components/FilterForm/FilterForm";
+import QuestionForm from "../../components/QuestionForm/QuestionForm";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 const Administrator = () => {
+  // QUESTIONS :
   const [questionData, setQuestionData] = useState({
     question: "",
     answer: "",
   });
   const [listOfQuestions, setListOfQuestions] = useState([]);
-  const [position, setPosition] = useState({
-    title: "",
-  });
-
-  const handlePositionChange = (e) => {
-    const { name, value } = e.target;
-    setPosition({
-      ...position,
-      [name]: value,
-    });
-  };
-
-  const handlePositionSubmit = (e) => {
-    e.preventDefault();
-
-    axios.post("http://localhost:5000/positions", position).then((response) => {
-      console.log("IT WORKED (POSITION)");
-    });
-  };
-  console.log(position);
-
-  useEffect(() => {
-    axios.get("http://localhost:5000/questions").then((response) => {
-      setListOfQuestions(response.data);
-    });
-    axios.get("http://localhost:5000/positions").then((response) => {
-      console.log(response.data);
-    });
-  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -76,61 +51,51 @@ const Administrator = () => {
     });
   };
 
-  // const onEditorSubmit = (e) => {
-  //   e.preventDefault();
-  // };
-
-  // const handleEditorChange = (e) => {
-  //   setEditor(e.target.value);
-  // };
+  // GET DATA FROM DB :
+  useEffect(() => {
+    axios.get("http://localhost:5000/questions").then((response) => {
+      setListOfQuestions(response.data);
+    });
+  }, []);
 
   return (
     <>
       <TopBar />
-      {/* <form onClick={onEditorSubmit}>
-        <Editor value={editor} name="editor" onChange={handleEditorChange} />
-        <div>
-          <button>SUBMIT</button>
+      <div className="links">
+        <div className="links__wrapper">
+          <Link to={`/positions`}>
+            <h2>POSITIONS</h2>
+          </Link>
         </div>
-      </form>
-      <Editor />
-      <Editor /> */}
-      <div>
-        POSITION
-        <form onSubmit={handlePositionSubmit}>
-          <input
-            type="text"
-            name="title"
-            placeholder="position"
-            value={position.title}
-            onChange={handlePositionChange}
-          />
-          <div>
-            <button>Submit</button>
-          </div>
-        </form>
+        <div className="links__wrapper">
+          <Link to={`/programs`}>
+            <h2>PROGRAMS</h2>
+          </Link>
+        </div>
+        <div className="links__wrapper">
+          <Link to={`/departaments`}>
+            <h2>DEPARTAMENTS</h2>
+          </Link>
+        </div>
       </div>
-      <form onSubmit={onSubmit}>
-        <input
-          type="text"
-          name="question"
-          placeholder="klausimas"
-          value={questionData.question}
-          onChange={handleChange}
+      <div className="question-forms">
+        <QuestionForm
+          formTitle="ADD A QUESTION"
+          handleSubmit={onSubmit}
+          questionTitle="QUESTION"
+          questionName="question"
+          questionPlaceholder="question"
+          questionValue={questionData.question}
+          handleQuestionChange={handleChange}
+          answerTitle="ANSWER"
+          answerName="answer"
+          answerPlaceholder="answer"
+          answerValue={questionData.answer}
+          handleAnswerChange={handleChange}
+          button="ADD QUESTION"
         />
-        <div>
-          <textarea
-            name="answer"
-            placeholder="atsakymas"
-            value={questionData.answer}
-            onChange={handleChange}
-          />
-        </div>
-        <div>
-          <button>Submit</button>
-        </div>
-      </form>
-      <div>
+      </div>
+      <div className="questions">
         {listOfQuestions.length > 0 &&
           listOfQuestions.map((question) => (
             <QuestionCard

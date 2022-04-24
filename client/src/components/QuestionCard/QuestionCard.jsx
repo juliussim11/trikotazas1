@@ -21,18 +21,16 @@ const QuestionCard = ({ post, linkTo }) => {
   console.log("POST ID: ", post.id);
 
   return (
-    <>
-      <div className="card__wrapper">
-        <Link to={linkTo} className="link">
-          {post.question}
-        </Link>
-        {isLoggedIn ? (
-          <div>
-            <button onClick={handleDelete}>DELETE{post.id}</button>
-          </div>
-        ) : null}
-      </div>
-    </>
+    <div className="card__wrapper">
+      <Link to={linkTo} className="link">
+        <h3>{post.question}</h3>
+      </Link>
+      {isLoggedIn ? (
+        <div>
+          <button onClick={handleDelete}>DELETE{post.id}</button>
+        </div>
+      ) : null}
+    </div>
   );
 };
 
