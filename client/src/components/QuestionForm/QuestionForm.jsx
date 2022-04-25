@@ -28,30 +28,20 @@ const QuestionForm = ({
     ProgramId: [],
     DepartamentId: [],
   });
-  const [checkedPrograms, setCheckedPrograms] = useState([]);
-  console.log("CHECKED PROGRAM: ", checkedPrograms);
-  const [checkedPositions, setCheckedPositions] = useState([]);
-  const [checkedDepartaments, setCheckedDepartaments] = useState([]);
   console.log("QUESTION DATA: ", questionData);
 
-  const addProgram = (id) => {
-    if (checkedPrograms.checked) {
-      setQuestionData((prevState) => ({
-        PositionId: [...prevState, checkedPrograms.id],
-      }));
-      props.setQuestionData({ ...questionData.PositionId, checkedPrograms });
-    } else {
-      setQuestionData(
-        questionData.ProgramId.filter((val) => {
-          return val.id != id;
-        })
-      );
-      props.setQuestionData(
-        questionData.ProgramId.filter((val) => {
-          return val.id != id;
-        })
-      );
-    }
+  const onCheck = (id) => {
+    setQuestionData({
+      ...questionData,
+      ProgramId: [...questionData.ProgramId, id],
+    });
+  };
+
+  const onUncheck = (id) => {
+    setQuestionData({
+      ...questionData,
+      ProgramId: questionData.ProgramId.filter((progId) => progId !== id),
+    });
   };
 
   // const addPosition = (id) => {
@@ -104,8 +94,8 @@ const QuestionForm = ({
                   name={program.title}
                   id={program.id}
                   key={program.id}
-                  setFilterChecked={setCheckedPrograms}
-                  //onChange={addProgram}
+                  onCheck={onCheck}
+                  onUncheck={onUncheck}
                 />
               ))}
           </div>
