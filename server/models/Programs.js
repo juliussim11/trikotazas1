@@ -6,12 +6,16 @@ module.exports = (sequelize, DataTypes) => {
     },
   });
 
+  // Programs.associate = (models) => {
+  //   Programs.belongsToMany(models.Questions, {
+  //     through: "question_prog_pos_dep",
+  //     as: "questions",
+  //     foreignKey: "programId",
+  //   });
+  // };
+
   Programs.associate = (models) => {
-    Programs.belongsToMany(models.Questions, {
-      through: "question_prog_pos_dep",
-      as: "questions",
-      foreignKey: "programId",
-    });
+    Programs.hasMany(models.Questions);
   };
 
   return Programs;

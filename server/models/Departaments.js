@@ -6,12 +6,16 @@ module.exports = (sequelize, DataTypes) => {
     },
   });
 
+  // Departaments.associate = (models) => {
+  //   Departaments.belongsToMany(models.Questions, {
+  //     through: "question_prog_pos_dep",
+  //     as: "questions",
+  //     foreignKey: "departamentId",
+  //   });
+  // };
+
   Departaments.associate = (models) => {
-    Departaments.belongsToMany(models.Questions, {
-      through: "question_prog_pos_dep",
-      as: "questions",
-      foreignKey: "departamentId",
-    });
+    Departaments.hasMany(models.Questions);
   };
 
   return Departaments;

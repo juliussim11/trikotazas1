@@ -4,7 +4,6 @@ import { Editor } from "@tinymce/tinymce-react";
 import SearchBar from "../../components/SearchBar/SearchBar";
 import TopBar from "../../components/TopBar/TopBar";
 import QuestionCard from "../../components/QuestionCard/QuestionCard";
-import FilterForm from "../../components/FilterForm/FilterForm";
 import QuestionForm from "../../components/QuestionForm/QuestionForm";
 import axios from "axios";
 import { Link } from "react-router-dom";
@@ -14,6 +13,9 @@ const Administrator = () => {
   const [questionData, setQuestionData] = useState({
     question: "",
     answer: "",
+    PositionId: [],
+    ProgramId: [],
+    DepartamentId: [],
   });
   const [listOfQuestions, setListOfQuestions] = useState([]);
 
@@ -42,7 +44,6 @@ const Administrator = () => {
       });
     resetUserInputs();
   };
-  console.log(listOfQuestions);
 
   const handleDelete = (id) => {
     axios
@@ -68,10 +69,24 @@ const Administrator = () => {
     });
   };
 
+  // STATE OF FILTERS :
+  const [listOfPositions, setListOfPositions] = useState([]);
+  const [listOfPrograms, setListOfPrograms] = useState([]);
+  const [listOfDepartaments, setListOfDepartaments] = useState([]);
+
   // GET DATA FROM DB :
   useEffect(() => {
     axios.get("http://localhost:5000/questions").then((response) => {
       setListOfQuestions(response.data);
+    });
+    axios.get("http://localhost:5000/positions").then((response) => {
+      setListOfPositions(response.data);
+    });
+    axios.get("http://localhost:5000/programs").then((response) => {
+      setListOfPrograms(response.data);
+    });
+    axios.get("http://localhost:5000/departaments").then((response) => {
+      setListOfDepartaments(response.data);
     });
   }, []);
 
@@ -110,6 +125,10 @@ const Administrator = () => {
           answerValue={questionData.answer}
           handleAnswerChange={handleChange}
           button="ADD QUESTION"
+          positions={listOfPositions}
+          programs={listOfPrograms}
+          departaments={listOfDepartaments}
+          setQuestionData={setQuestionData}
         />
       </div>
       <div className="questions">

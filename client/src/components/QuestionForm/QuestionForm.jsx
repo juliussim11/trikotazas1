@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import PropTypes from "prop-types";
+import FilterCheckBox from "../FilterCheckBox/FilterCheckBox";
 import "./QuestionForm.scss";
 
 const QuestionForm = ({
@@ -17,7 +18,60 @@ const QuestionForm = ({
   answerName,
   answerPlaceholder,
   answerValue,
+  positions,
+  programs,
+  departaments,
+  ...props
 }) => {
+  const [questionData, setQuestionData] = useState({
+    PositionId: [],
+    ProgramId: [],
+    DepartamentId: [],
+  });
+  const [checkedPrograms, setCheckedPrograms] = useState([]);
+  console.log("CHECKED PROGRAM: ", checkedPrograms);
+  const [checkedPositions, setCheckedPositions] = useState([]);
+  const [checkedDepartaments, setCheckedDepartaments] = useState([]);
+  console.log("QUESTION DATA: ", questionData);
+
+  const addProgram = (id) => {
+    if (checkedPrograms.checked) {
+      setQuestionData((prevState) => ({
+        PositionId: [...prevState, checkedPrograms.id],
+      }));
+      props.setQuestionData({ ...questionData.PositionId, checkedPrograms });
+    } else {
+      setQuestionData(
+        questionData.ProgramId.filter((val) => {
+          return val.id != id;
+        })
+      );
+      props.setQuestionData(
+        questionData.ProgramId.filter((val) => {
+          return val.id != id;
+        })
+      );
+    }
+  };
+
+  // const addPosition = (id) => {
+  //   if (!positionChecked) {
+  //     setQuestionData({ ...questionData, PositionId: id });
+  //     props.setQuestionData({ ...questionData, PositionId: id });
+  //     setPositionChecked(true);
+  //     props.setPositionChecked(true);
+  //   }
+  // };
+
+  // const addDepartament = (id) => {
+  //   if (!departamentChecked.id) {
+  //     setQuestionData({ ...questionData, DepartamentId: id });
+  //     props.setQuestionData({ ...questionData, DepartamentId: id });
+  //     setDepartamentChecked(true);
+  //     props.setDepartamentChecked(true);
+  //   }
+  // };
+
   return (
     <div className="form__wrapper">
       <h2>{formTitle}</h2>
@@ -30,7 +84,7 @@ const QuestionForm = ({
           value={questionValue}
           onChange={handleQuestionChange}
         />
-        <div className="form__wrapper_input">
+        <div>
           <h3>{answerTitle}</h3>
           <textarea
             name={answerName}
@@ -38,6 +92,49 @@ const QuestionForm = ({
             value={answerValue}
             onChange={handleAnswerChange}
           />
+        </div>
+        <div className="form__wrapper__checkbox">
+          <div className="form__wrapper__checkbox__column">
+            <h4>PROGRAMOS</h4>
+            {programs.length > 0 &&
+              programs.map((program) => (
+                <FilterCheckBox
+                  checkFilterTitle="PROGRAMOS"
+                  title={program.title}
+                  name={program.title}
+                  id={program.id}
+                  key={program.id}
+                  setFilterChecked={setCheckedPrograms}
+                  //onChange={addProgram}
+                />
+              ))}
+          </div>
+          <div className="form__wrapper__checkbox__column">
+            <h4>PAREIGOS</h4>
+            {positions.length > 0 &&
+              positions.map((position) => (
+                <FilterCheckBox
+                  checkFilterTitle="PAREIGOS"
+                  title={position.title}
+                  name={position.title}
+                  key={position.id}
+                  id={position.id}
+                />
+              ))}
+          </div>
+          <div className="form__wrapper__checkbox__column">
+            <h4>DEPARTAMENTAS</h4>
+            {departaments.length > 0 &&
+              departaments.map((departament) => (
+                <FilterCheckBox
+                  checkFilterTitle="DEPARTAMENTAI"
+                  title={departament.title}
+                  name={departament.title}
+                  key={departament.id}
+                  id={departament.id}
+                />
+              ))}
+          </div>
         </div>
         <div className="form__wrapper__button">
           <button>{button}</button>
@@ -61,6 +158,9 @@ QuestionForm.propTypes = {
   answerName: PropTypes.node,
   answerPlaceholder: PropTypes.node,
   answerValue: PropTypes.node,
+  positions: PropTypes.array,
+  programs: PropTypes.array,
+  departaments: PropTypes.array,
 };
 
 export default QuestionForm;
