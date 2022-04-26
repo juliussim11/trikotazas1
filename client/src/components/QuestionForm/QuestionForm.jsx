@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import PropTypes from "prop-types";
 import FilterCheckBox from "../FilterCheckBox/FilterCheckBox";
+import axios from "axios";
 import "./QuestionForm.scss";
 
 const QuestionForm = ({
@@ -18,50 +19,7 @@ const QuestionForm = ({
   answerName,
   answerPlaceholder,
   answerValue,
-  positions,
-  programs,
-  departaments,
-  ...props
 }) => {
-  const [questionData, setQuestionData] = useState({
-    PositionId: [],
-    ProgramId: [],
-    DepartamentId: [],
-  });
-  console.log("QUESTION DATA: ", questionData);
-
-  const onCheck = (id) => {
-    setQuestionData({
-      ...questionData,
-      ProgramId: [...questionData.ProgramId, id],
-    });
-  };
-
-  const onUncheck = (id) => {
-    setQuestionData({
-      ...questionData,
-      ProgramId: questionData.ProgramId.filter((progId) => progId !== id),
-    });
-  };
-
-  // const addPosition = (id) => {
-  //   if (!positionChecked) {
-  //     setQuestionData({ ...questionData, PositionId: id });
-  //     props.setQuestionData({ ...questionData, PositionId: id });
-  //     setPositionChecked(true);
-  //     props.setPositionChecked(true);
-  //   }
-  // };
-
-  // const addDepartament = (id) => {
-  //   if (!departamentChecked.id) {
-  //     setQuestionData({ ...questionData, DepartamentId: id });
-  //     props.setQuestionData({ ...questionData, DepartamentId: id });
-  //     setDepartamentChecked(true);
-  //     props.setDepartamentChecked(true);
-  //   }
-  // };
-
   return (
     <div className="form__wrapper">
       <h2>{formTitle}</h2>
@@ -82,49 +40,6 @@ const QuestionForm = ({
             value={answerValue}
             onChange={handleAnswerChange}
           />
-        </div>
-        <div className="form__wrapper__checkbox">
-          <div className="form__wrapper__checkbox__column">
-            <h4>PROGRAMOS</h4>
-            {programs.length > 0 &&
-              programs.map((program) => (
-                <FilterCheckBox
-                  checkFilterTitle="PROGRAMOS"
-                  title={program.title}
-                  name={program.title}
-                  id={program.id}
-                  key={program.id}
-                  onCheck={onCheck}
-                  onUncheck={onUncheck}
-                />
-              ))}
-          </div>
-          <div className="form__wrapper__checkbox__column">
-            <h4>PAREIGOS</h4>
-            {positions.length > 0 &&
-              positions.map((position) => (
-                <FilterCheckBox
-                  checkFilterTitle="PAREIGOS"
-                  title={position.title}
-                  name={position.title}
-                  key={position.id}
-                  id={position.id}
-                />
-              ))}
-          </div>
-          <div className="form__wrapper__checkbox__column">
-            <h4>DEPARTAMENTAS</h4>
-            {departaments.length > 0 &&
-              departaments.map((departament) => (
-                <FilterCheckBox
-                  checkFilterTitle="DEPARTAMENTAI"
-                  title={departament.title}
-                  name={departament.title}
-                  key={departament.id}
-                  id={departament.id}
-                />
-              ))}
-          </div>
         </div>
         <div className="form__wrapper__button">
           <button>{button}</button>
@@ -151,6 +66,7 @@ QuestionForm.propTypes = {
   positions: PropTypes.array,
   programs: PropTypes.array,
   departaments: PropTypes.array,
+  setQuestionData: PropTypes.func,
 };
 
 export default QuestionForm;

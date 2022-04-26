@@ -1,0 +1,69 @@
+@import "src/styles/base/shadows";
+@import "src/styles/base/colors";
+@import "../../styles/mixins";
+
+.checkbox-wrapper {
+  align-items: center;
+  background-color: $color-white;
+  border-radius: 20px;
+  box-shadow: $box-shadow-base;
+  display: flex;
+  justify-content: center;
+  margin: 50px 20px;
+  min-width: 230px;
+  padding: 20px;
+
+  @include tablet-s {
+    width: 90vw;
+  }
+  @include mobile {
+    margin: 10px;
+    width: 100vw;
+  }
+
+  &__row {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+
+    @include tablet-s {
+      align-items: center;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-evenly;
+      margin: 10px;
+      width: 90vw;
+    }
+    @include mobile {
+      align-items: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-evenly;
+      margin: 10px;
+      width: 100vw;
+    }
+
+    &__column {
+      align-items: center;
+      align-self: flex-start;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      margin: 0 20px;
+
+      @include tablet-s {
+        margin: 10px;
+        width: 90vw;
+      }
+      @include mobile {
+        align-self: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        margin: 10px;
+        width: 100vw;
+      }
+    }
+  }
+}

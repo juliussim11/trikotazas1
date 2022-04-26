@@ -66,21 +66,5 @@
         padding: 5px;
       }
     }
-
-    &__checkbox {
-      align-items: center;
-      display: flex;
-      flex-direction: row;
-      justify-content: space-evenly;
-
-      &__column {
-        align-items: center;
-        align-self: flex-start;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        margin: 0 20px;
-      }
-    }
   }
 }

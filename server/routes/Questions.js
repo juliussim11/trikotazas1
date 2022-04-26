@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { Questions } = require("../models");
+const { Questions, Programs } = require("../models");
 const { validateToken } = require("../middlewares/AuthMiddleware");
 
 router.get("/", async (req, res) => {
@@ -43,6 +43,19 @@ router.put("/:id", validateToken, async (req, res) => {
   });
 
   res.json("UPDATED SUCCESFULLY");
+});
+
+router.get("/questionprogram/:questionId/:programId", async (req, res) => {
+  const { questionId, programId } = req.params;
+  console.log(req.params);
+  const program = await Programs.findAll({
+    where: { id: programId },
+    atributes: ["id"],
+  });
+  //const program = await Programs.findByPk(programId);
+  const question = await Questions.findByPk(questionId);
+  console.log(question);
+  await question.addPrograms(program);
 });
 
 module.exports = router;

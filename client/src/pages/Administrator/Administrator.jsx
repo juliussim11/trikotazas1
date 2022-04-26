@@ -13,10 +13,8 @@ const Administrator = () => {
   const [questionData, setQuestionData] = useState({
     question: "",
     answer: "",
-    PositionId: [],
-    ProgramId: [],
-    DepartamentId: [],
   });
+  console.log("QUESTION DATA: ", questionData);
   const [listOfQuestions, setListOfQuestions] = useState([]);
 
   const handleChange = (e) => {
@@ -66,29 +64,19 @@ const Administrator = () => {
     setQuestionData({
       question: "",
       answer: "",
+      PositionId: [],
+      ProgramId: [],
+      DepartamentId: [],
     });
   };
-
-  // STATE OF FILTERS :
-  const [listOfPositions, setListOfPositions] = useState([]);
-  const [listOfPrograms, setListOfPrograms] = useState([]);
-  const [listOfDepartaments, setListOfDepartaments] = useState([]);
 
   // GET DATA FROM DB :
   useEffect(() => {
     axios.get("http://localhost:5000/questions").then((response) => {
       setListOfQuestions(response.data);
     });
-    axios.get("http://localhost:5000/positions").then((response) => {
-      setListOfPositions(response.data);
-    });
-    axios.get("http://localhost:5000/programs").then((response) => {
-      setListOfPrograms(response.data);
-    });
-    axios.get("http://localhost:5000/departaments").then((response) => {
-      setListOfDepartaments(response.data);
-    });
   }, []);
+  console.log(listOfQuestions);
 
   return (
     <>
@@ -125,10 +113,6 @@ const Administrator = () => {
           answerValue={questionData.answer}
           handleAnswerChange={handleChange}
           button="ADD QUESTION"
-          positions={listOfPositions}
-          programs={listOfPrograms}
-          departaments={listOfDepartaments}
-          setQuestionData={setQuestionData}
         />
       </div>
       <div className="questions">

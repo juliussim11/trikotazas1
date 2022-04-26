@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 
 const FilterCheckBox = ({ title, name, id, ...props }) => {
   const [filterChecked, setFilterChecked] = useState(false);
-  console.log("CHECKED FILTER: ", filterChecked);
 
   return (
     <div>

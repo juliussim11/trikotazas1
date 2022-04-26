@@ -34,5 +34,12 @@ module.exports = (sequelize, DataTypes) => {
   //   });
   // };
 
+  Questions.associate = (models) => {
+    Questions.belongsToMany(models.Programs, {
+      through: "questionprogram",
+      foreignKey: "questionId",
+    });
+  };
+
   return Questions;
 };
