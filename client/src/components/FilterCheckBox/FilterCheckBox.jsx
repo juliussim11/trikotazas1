@@ -1,8 +1,18 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 
-const FilterCheckBox = ({ title, name, id, ...props }) => {
-  const [filterChecked, setFilterChecked] = useState(false);
+const FilterCheckBox = ({ title, name, id, checked, ...props }) => {
+  const [filterChecked, setFilterChecked] = useState(checked);
+
+  const onChange = () => {
+    if (!filterChecked) {
+      setFilterChecked(true);
+      props.onCheck(id);
+    } else {
+      setFilterChecked(false);
+      props.onUncheck(id);
+    }
+  };
 
   return (
     <div>
@@ -12,15 +22,7 @@ const FilterCheckBox = ({ title, name, id, ...props }) => {
         checked={filterChecked}
         name={name}
         id={id}
-        onChange={() => {
-          if (!filterChecked) {
-            setFilterChecked(true);
-            props.onCheck(id);
-          } else {
-            setFilterChecked(false);
-            props.onUncheck(id);
-          }
-        }}
+        onChange={onChange}
       />
     </div>
   );
@@ -29,9 +31,9 @@ const FilterCheckBox = ({ title, name, id, ...props }) => {
 FilterCheckBox.propTypes = {
   title: PropTypes.string,
   id: PropTypes.node,
-  checkFilterTitle: PropTypes.string,
   onCheck: PropTypes.func,
   onUncheck: PropTypes.func,
+  checked: PropTypes.bool,
 };
 
 export default FilterCheckBox;

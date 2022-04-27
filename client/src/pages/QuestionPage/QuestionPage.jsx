@@ -7,6 +7,12 @@ import axios from "axios";
 const QuestionPage = () => {
   const [questionData, setQuestionData] = useState({});
 
+  const [listOfPositions, setListOfPositions] = useState([]);
+  const [listOfPrograms, setListOfPrograms] = useState([]);
+  const [newListOfPrograms, setNewListOfPrograms] = useState([]);
+  const [listOfDepartaments, setListOfDepartaments] = useState([]);
+  const [checkedPrograms, setCheckedPrograms] = useState([]);
+
   const { id } = useParams();
   console.log(id);
 
@@ -20,10 +26,28 @@ const QuestionPage = () => {
     axios.get("http://localhost:5000/programs").then((response) => {
       setListOfPrograms(response.data);
     });
+    axios
+      .get(`http://localhost:5000/questions/${id}/programs`)
+      .then((response) => {
+        setCheckedPrograms(response.data);
+      });
     axios.get("http://localhost:5000/departaments").then((response) => {
       setListOfDepartaments(response.data);
     });
   }, []);
+
+  useEffect(() => {
+    const programList = listOfPrograms.map((program) => {
+      if (checkedPrograms.includes(program.id)) {
+        program.checked = true;
+        return program;
+      } else {
+        program.checked = false;
+        return program;
+      }
+    });
+    setNewListOfPrograms(programList);
+  }, [checkedPrograms]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -50,28 +74,11 @@ const QuestionPage = () => {
 
   // FILTERS !!!!!!!!!!!!!!!!!!!
 
-  const [listOfPositions, setListOfPositions] = useState([]);
-  const [listOfPrograms, setListOfPrograms] = useState([]);
-  const [listOfDepartaments, setListOfDepartaments] = useState([]);
-
-  const programIden = 3;
-
-  const onProgramCheck = () => {
-    // setQuestionData({
-    //   ...questionData,
-    //   ProgramId: [...questionData.ProgramId, id],
-    // });
-    // props.setQuestionData({
-    //   ...questionData,
-    //   ProgramId: [...questionData.ProgramId, id],
-    // });
-    // setQuestionProgram({
-    //   ...questionProgram,
-    //   ProgramId: id,
-    // });
+  const onProgramCheck = (identificator) => {
+    console.log("PROGRAM ID: ", identificator);
     axios
       .get(
-        `http://localhost:5000/questions/questionprogram/${id}/${programIden}`,
+        `http://localhost:5000/questions/add/${id}/program/${identificator}`,
         {
           headers: {
             accessToken: localStorage.getItem("accessToken"),
@@ -86,16 +93,24 @@ const QuestionPage = () => {
       });
   };
 
-  // const onProgramUncheck = (id) => {
-  //   setQuestionData({
-  //     ...questionData,
-  //     ProgramId: questionData.ProgramId.filter((progId) => progId !== id),
-  //   });
-  //   props.setQuestionData({
-  //     ...questionData,
-  //     ProgramId: questionData.ProgramId.filter((progId) => progId !== id),
-  //   });
-  // };
+  const onProgramUncheck = (identificator) => {
+    console.log("PROGRAM ID: ", identificator);
+    axios
+      .get(
+        `http://localhost:5000/questions/delete/${id}/program/${identificator}`,
+        {
+          headers: {
+            accessToken: localStorage.getItem("accessToken"),
+          },
+        }
+      )
+      .then((response) => {
+        if (response.data.error) {
+          console.log(response.data.error);
+          return;
+        }
+      });
+  };
 
   // const onPositionCheck = (id) => {
   //   setQuestionData({
@@ -158,16 +173,16 @@ const QuestionPage = () => {
           <div className="checkbox-wrapper__row">
             <div className="checkbox-wrapper__row__column">
               <h4>PROGRAMOS</h4>
-              {listOfPrograms.length > 0 &&
-                listOfPrograms.map((program) => (
+              {newListOfPrograms.length > 0 &&
+                newListOfPrograms.map((program) => (
                   <FilterCheckBox
-                    checkFilterTitle="PROGRAMOS"
                     title={program.title}
                     name={program.title}
                     id={program.id}
                     key={program.id}
                     onCheck={onProgramCheck}
-                    //onUncheck={onProgramUncheck}
+                    onUncheck={onProgramUncheck}
+                    checked={program.checked}
                   />
                 ))}
             </div>
@@ -176,7 +191,6 @@ const QuestionPage = () => {
               {listOfPositions.length > 0 &&
                 listOfPositions.map((position) => (
                   <FilterCheckBox
-                    checkFilterTitle="PAREIGOS"
                     title={position.title}
                     name={position.title}
                     key={position.id}
@@ -191,7 +205,6 @@ const QuestionPage = () => {
               {listOfDepartaments.length > 0 &&
                 listOfDepartaments.map((departament) => (
                   <FilterCheckBox
-                    checkFilterTitle="DEPARTAMENTAI"
                     title={departament.title}
                     name={departament.title}
                     key={departament.id}

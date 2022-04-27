@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { Questions, Programs } = require("../models");
+const { Questions, Programs, QuestionProgram } = require("../models");
 const { validateToken } = require("../middlewares/AuthMiddleware");
 
 router.get("/", async (req, res) => {
@@ -45,17 +45,41 @@ router.put("/:id", validateToken, async (req, res) => {
   res.json("UPDATED SUCCESFULLY");
 });
 
-router.get("/questionprogram/:questionId/:programId", async (req, res) => {
+// QUESTION PROGRAMS ASSOCIATION:
+router.get("/:questionId/programs", async (req, res) => {
+  const id = req.params.questionId;
+  console.log("REQ PARAMS!!!!!!!!!!!!!!!!!!!: ", id);
+  const question = await Questions.findByPk(id);
+  const listOfAssociatedPrograms = await question.getPrograms({
+    attributes: ["id"],
+  });
+  const associatedProgramsIds = listOfAssociatedPrograms.map((programs) => {
+    return programs.id;
+  });
+  res.json(associatedProgramsIds);
+});
+
+router.get("/add/:questionId/program/:programId", async (req, res) => {
   const { questionId, programId } = req.params;
-  console.log(req.params);
+  console.log("PROGRAM: ", Programs);
   const program = await Programs.findAll({
     where: { id: programId },
-    atributes: ["id"],
+    attributes: ["id"],
   });
-  //const program = await Programs.findByPk(programId);
   const question = await Questions.findByPk(questionId);
   console.log(question);
   await question.addPrograms(program);
+});
+
+router.get("/delete/:questionId/program/:programId", async (req, res) => {
+  const { questionId, programId } = req.params;
+  const program = await Programs.findAll({
+    where: { id: programId },
+    attributes: ["id"],
+  });
+  const question = await Questions.findByPk(questionId);
+  console.log(question);
+  await question.removePrograms(program);
 });
 
 module.exports = router;
