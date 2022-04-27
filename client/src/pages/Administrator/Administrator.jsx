@@ -5,6 +5,7 @@ import SearchBar from "../../components/SearchBar/SearchBar";
 import TopBar from "../../components/TopBar/TopBar";
 import QuestionCard from "../../components/QuestionCard/QuestionCard";
 import QuestionForm from "../../components/QuestionForm/QuestionForm";
+import DropdownFilter from "../../components/DropdownFilter/DropdownFilter";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
@@ -70,10 +71,29 @@ const Administrator = () => {
     });
   };
 
+  const [listOfPositions, setListOfPositions] = useState([]);
+  const [selectedPosition, setSelectedPosition] = useState("");
+  console.log("SELETED POSITION: ", selectedPosition);
+  const [listOfPrograms, setListOfPrograms] = useState([]);
+  const [selectedProgram, setSelectedProgram] = useState("");
+  console.log("SELETED PROGRAM: ", selectedProgram);
+  const [listOfDepartaments, setListOfDepartaments] = useState([]);
+  const [selectedDepartament, setSelectedDepartament] = useState("");
+  console.log("SELETED DEPARTAMENT: ", selectedDepartament);
+
   // GET DATA FROM DB :
   useEffect(() => {
     axios.get("http://localhost:5000/questions").then((response) => {
       setListOfQuestions(response.data);
+    });
+    axios.get("http://localhost:5000/positions").then((response) => {
+      setListOfPositions(response.data);
+    });
+    axios.get("http://localhost:5000/programs").then((response) => {
+      setListOfPrograms(response.data);
+    });
+    axios.get("http://localhost:5000/departaments").then((response) => {
+      setListOfDepartaments(response.data);
     });
   }, []);
   console.log(listOfQuestions);
@@ -115,6 +135,21 @@ const Administrator = () => {
           button="ADD QUESTION"
         />
       </div>
+      <DropdownFilter
+        title="POSITIONS"
+        filters={listOfPositions}
+        setSelectedFilter={setSelectedPosition}
+      />
+      <DropdownFilter
+        title="PROGRAMS"
+        filters={listOfPrograms}
+        setSelectedFilter={setSelectedProgram}
+      />
+      <DropdownFilter
+        title="DEPARTAMENTS"
+        filters={listOfDepartaments}
+        setSelectedFilter={setSelectedDepartament}
+      />
       <div className="questions">
         {listOfQuestions.length > 0 &&
           listOfQuestions.map((question) => (

@@ -1,54 +1,39 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
-import "./DropdownFilter.scss";
+import DropdownOption from "./DropdownOption/DropdownOption";
 
-const DropdownFilter = ({ handleChange, value, filters, title }) => {
-  const filteredPrograma = [...new Set(filters.map((q) => q.programa))];
-  const filteredSkyrius = [...new Set(filters.map((q) => q.skyrius))];
-  const filteredPareigos = [...new Set(filters.map((q) => q.pareigos))];
+const DropdownFilter = ({ title, filters, ...props }) => {
+  const [selectedFilter, setSelectedFilter] = useState("");
+
+  const onChange = (e) => {
+    setSelectedFilter(e.target.value);
+    props.setSelectedFilter(e.target.value);
+  };
+
+  console.log("FILTERS: ", filters);
+  console.log("SELECTED FILTER: ", selectedFilter);
 
   return (
-    <div className="dropdown">
-      <label>
-        <div className="dropdown__title">{title}</div>
-        <select
-          value={value}
-          onChange={handleChange}
-          className="dropdown__field"
-        >
-          <option value="">---</option>
-          {title === "Programa"
-            ? filteredPrograma.map((filter, index) => (
-                <option key={index} value={filter}>
-                  {filter}
-                </option>
-              ))
-            : ""}
-          {title === "Skyrius"
-            ? filteredSkyrius.map((filter, index) => (
-                <option key={index} value={filter}>
-                  {filter}
-                </option>
-              ))
-            : ""}
-          {title === "Pareigos"
-            ? filteredPareigos.map((filter, index) => (
-                <option key={index} value={filter}>
-                  {filter}
-                </option>
-              ))
-            : ""}
-        </select>
-      </label>
+    <div>
+      <div>{title}</div>
+      <select value={selectedFilter} onChange={onChange}>
+        <option value="">-----</option>
+        {filters.map((filter) => (
+          <DropdownOption
+            key={filter.id}
+            value={filter.id}
+            optionName={filter.title}
+          />
+        ))}
+      </select>
     </div>
   );
 };
 
 DropdownFilter.propTypes = {
   title: PropTypes.string,
-  handleChange: PropTypes.func,
-  value: PropTypes.any,
-  filters: PropTypes.any,
+  filters: PropTypes.array,
+  setSelectedFilter: PropTypes.func,
 };
 
 export default DropdownFilter;
