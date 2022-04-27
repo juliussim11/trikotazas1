@@ -10,8 +10,6 @@ const db = require("./models");
 // Routers
 const questionRouter = require("./routes/Questions");
 app.use("/questions", questionRouter);
-const questionProgramRouter = require("./routes/QuestionProgram");
-app.use("/questionprogram", questionProgramRouter);
 const positionRouter = require("./routes/Positions");
 app.use("/positions", positionRouter);
 const programRouter = require("./routes/Programs");

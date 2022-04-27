@@ -10,34 +10,23 @@ module.exports = (sequelize, DataTypes) => {
     },
   });
 
-  // Questions.associate = (models) => {
-  //   Questions.belongsToMany(models.Programs, {
-  //     through: "question_position",
-  //     as: "programs",
-  //     foreignKey: "questionId",
-  //   });
-  // };
-
-  // Questions.associate = (models) => {
-  //   Questions.belongsToMany(models.Positions, {
-  //     through: "question_position",
-  //     as: "positions",
-  //     foreignKey: "questionId",
-  //   });
-  // };
-
-  // Questions.associate = (models) => {
-  //   Questions.belongsToMany(models.Departaments, {
-  //     through: "question_prog_pos_dep",
-  //     as: "departaments",
-  //     foreignKey: "questionId",
-  //   });
-  // };
-
   Questions.associate = (models) => {
     Questions.belongsToMany(models.Programs, {
-      through: "questionprogram",
-      foreignKey: "questionId",
+      through: "program_question",
+      className: "Programs",
+      foreignKey: "QuestionId",
+    });
+
+    Questions.belongsToMany(models.Positions, {
+      through: "position_question",
+      className: "Positions",
+      foreignKey: "QuestionId",
+    });
+
+    Questions.belongsToMany(models.Departaments, {
+      through: "departament_question",
+      className: "Departaments",
+      foreignKey: "QuestionId",
     });
   };
 

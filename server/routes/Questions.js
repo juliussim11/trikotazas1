@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { Questions, Programs, QuestionProgram } = require("../models");
+const { Questions, Programs, Positions, Departaments } = require("../models");
 const { validateToken } = require("../middlewares/AuthMiddleware");
 
 router.get("/", async (req, res) => {
@@ -46,9 +46,8 @@ router.put("/:id", validateToken, async (req, res) => {
 });
 
 // QUESTION PROGRAMS ASSOCIATION:
-router.get("/:questionId/programs", async (req, res) => {
-  const id = req.params.questionId;
-  console.log("REQ PARAMS!!!!!!!!!!!!!!!!!!!: ", id);
+router.get("/programs/:QuestionId", async (req, res) => {
+  const id = req.params.QuestionId;
   const question = await Questions.findByPk(id);
   const listOfAssociatedPrograms = await question.getPrograms({
     attributes: ["id"],
@@ -59,27 +58,92 @@ router.get("/:questionId/programs", async (req, res) => {
   res.json(associatedProgramsIds);
 });
 
-router.get("/add/:questionId/program/:programId", async (req, res) => {
-  const { questionId, programId } = req.params;
-  console.log("PROGRAM: ", Programs);
+router.get("/add/:QuestionId/program/:ProgramId", async (req, res) => {
+  const { QuestionId, ProgramId } = req.params;
   const program = await Programs.findAll({
-    where: { id: programId },
+    where: { id: ProgramId },
     attributes: ["id"],
   });
-  const question = await Questions.findByPk(questionId);
-  console.log(question);
+  const question = await Questions.findByPk(QuestionId);
   await question.addPrograms(program);
 });
 
-router.get("/delete/:questionId/program/:programId", async (req, res) => {
-  const { questionId, programId } = req.params;
+router.get("/delete/:QuestionId/program/:ProgramId", async (req, res) => {
+  const { QuestionId, ProgramId } = req.params;
   const program = await Programs.findAll({
-    where: { id: programId },
+    where: { id: ProgramId },
     attributes: ["id"],
   });
-  const question = await Questions.findByPk(questionId);
-  console.log(question);
+  const question = await Questions.findByPk(QuestionId);
   await question.removePrograms(program);
+});
+
+// QUESTION POSITIONS ASSOCIATION:
+router.get("/positions/:QuestionId", async (req, res) => {
+  const id = req.params.QuestionId;
+  const question = await Questions.findByPk(id);
+  const listOfAssociatedPositions = await question.getPositions({
+    attributes: ["id"],
+  });
+  const associatedPositionsIds = listOfAssociatedPositions.map((positions) => {
+    return positions.id;
+  });
+  res.json(associatedPositionsIds);
+});
+
+router.get("/add/:QuestionId/position/:PositionId", async (req, res) => {
+  const { QuestionId, PositionId } = req.params;
+  const position = await Positions.findAll({
+    where: { id: PositionId },
+    attributes: ["id"],
+  });
+  const question = await Questions.findByPk(QuestionId);
+  await question.addPositions(position);
+});
+
+router.get("/delete/:QuestionId/position/:PositionId", async (req, res) => {
+  const { QuestionId, PositionId } = req.params;
+  const position = await Positions.findAll({
+    where: { id: PositionId },
+    attributes: ["id"],
+  });
+  const question = await Questions.findByPk(QuestionId);
+  await question.removePositions(position);
+});
+
+// QUESTION DEPARTAMENTS ASSOCIATION:
+router.get("/departaments/:QuestionId", async (req, res) => {
+  const id = req.params.QuestionId;
+  const question = await Questions.findByPk(id);
+  const listOfAssociatedDepartaments = await question.getDepartaments({
+    attributes: ["id"],
+  });
+  const associatedDepartamentsIds = listOfAssociatedDepartaments.map(
+    (departaments) => {
+      return departaments.id;
+    }
+  );
+  res.json(associatedDepartamentsIds);
+});
+
+router.get("/add/:QuestionId/departament/:DepartamentId", async (req, res) => {
+  const { QuestionId, DepartamentId } = req.params;
+  const departament = await Departaments.findAll({
+    where: { id: DepartamentId },
+    attributes: ["id"],
+  });
+  const question = await Questions.findByPk(QuestionId);
+  await question.addDepartaments(departament);
+});
+
+router.get("/delete/:QuestionId/departament/:DepartamentId", async (req, res) => {
+  const { QuestionId, DepartamentId } = req.params;
+  const departament = await Departaments.findAll({
+    where: { id: DepartamentId },
+    attributes: ["id"],
+  });
+  const question = await Questions.findByPk(QuestionId);
+  await question.removeDepartaments(departament);
 });
 
 module.exports = router;

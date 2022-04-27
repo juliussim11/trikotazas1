@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  const QuestionProgram = sequelize.define("program_question", {
+  const QuestionDepartament = sequelize.define("departament_question", {
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
@@ -7,5 +7,5 @@ module.exports = (sequelize, DataTypes) => {
     },
   });
 
-  return QuestionProgram;
+  return QuestionDepartament;
 };

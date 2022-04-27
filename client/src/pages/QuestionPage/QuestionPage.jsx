@@ -8,10 +8,15 @@ const QuestionPage = () => {
   const [questionData, setQuestionData] = useState({});
 
   const [listOfPositions, setListOfPositions] = useState([]);
+  const [newListOfPositions, setNewListOfPositions] = useState([]);
+  const [checkedPositions, setCheckedPositions] = useState([]);
   const [listOfPrograms, setListOfPrograms] = useState([]);
   const [newListOfPrograms, setNewListOfPrograms] = useState([]);
-  const [listOfDepartaments, setListOfDepartaments] = useState([]);
   const [checkedPrograms, setCheckedPrograms] = useState([]);
+  const [listOfDepartaments, setListOfDepartaments] = useState([]);
+  const [newListOfDepartaments, setNewListOfDepartaments] = useState([]);
+  const [checkedDepartaments, setCheckedDepartaments] = useState([]);
+  console.log("LIST OF PROGRAMS: ", newListOfPrograms);
 
   const { id } = useParams();
   console.log(id);
@@ -23,17 +28,27 @@ const QuestionPage = () => {
     axios.get("http://localhost:5000/positions").then((response) => {
       setListOfPositions(response.data);
     });
+    axios
+      .get(`http://localhost:5000/questions/positions/${id}`)
+      .then((response) => {
+        setCheckedPositions(response.data);
+      });
     axios.get("http://localhost:5000/programs").then((response) => {
       setListOfPrograms(response.data);
     });
     axios
-      .get(`http://localhost:5000/questions/${id}/programs`)
+      .get(`http://localhost:5000/questions/programs/${id}`)
       .then((response) => {
         setCheckedPrograms(response.data);
       });
     axios.get("http://localhost:5000/departaments").then((response) => {
       setListOfDepartaments(response.data);
     });
+    axios
+      .get(`http://localhost:5000/questions/departaments/${id}`)
+      .then((response) => {
+        setCheckedDepartaments(response.data);
+      });
   }, []);
 
   useEffect(() => {
@@ -48,6 +63,32 @@ const QuestionPage = () => {
     });
     setNewListOfPrograms(programList);
   }, [checkedPrograms]);
+
+  useEffect(() => {
+    const positionList = listOfPositions.map((position) => {
+      if (checkedPositions.includes(position.id)) {
+        position.checked = true;
+        return position;
+      } else {
+        position.checked = false;
+        return position;
+      }
+    });
+    setNewListOfPositions(positionList);
+  }, [checkedPositions]);
+
+  useEffect(() => {
+    const departamentList = listOfDepartaments.map((departament) => {
+      if (checkedDepartaments.includes(departament.id)) {
+        departament.checked = true;
+        return departament;
+      } else {
+        departament.checked = false;
+        return departament;
+      }
+    });
+    setNewListOfDepartaments(departamentList);
+  }, [checkedDepartaments]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -112,49 +153,81 @@ const QuestionPage = () => {
       });
   };
 
-  // const onPositionCheck = (id) => {
-  //   setQuestionData({
-  //     ...questionData,
-  //     PositionId: [...questionData.PositionId, id],
-  //   });
-  //   props.setQuestionData({
-  //     ...questionData,
-  //     PositionId: [...questionData.PositionId, id],
-  //   });
-  // };
+  const onPositionCheck = (identificator) => {
+    console.log("POSITION ID: ", identificator);
+    axios
+      .get(
+        `http://localhost:5000/questions/add/${id}/position/${identificator}`,
+        {
+          headers: {
+            accessToken: localStorage.getItem("accessToken"),
+          },
+        }
+      )
+      .then((response) => {
+        if (response.data.error) {
+          console.log(response.data.error);
+          return;
+        }
+      });
+  };
 
-  // const onPositionUncheck = (id) => {
-  //   setQuestionData({
-  //     ...questionData,
-  //     PositionId: questionData.PositionId.filter((posId) => posId !== id),
-  //   });
-  //   props.setQuestionData({
-  //     ...questionData,
-  //     PositionId: questionData.PositionId.filter((posId) => posId !== id),
-  //   });
-  // };
+  const onPositionUncheck = (identificator) => {
+    console.log("POSITION ID: ", identificator);
+    axios
+      .get(
+        `http://localhost:5000/questions/delete/${id}/position/${identificator}`,
+        {
+          headers: {
+            accessToken: localStorage.getItem("accessToken"),
+          },
+        }
+      )
+      .then((response) => {
+        if (response.data.error) {
+          console.log(response.data.error);
+          return;
+        }
+      });
+  };
 
-  // const onDepartamentCheck = (id) => {
-  //   setQuestionData({
-  //     ...questionData,
-  //     DepartamentId: [...questionData.DepartamentId, id],
-  //   });
-  //   props.setQuestionData({
-  //     ...questionData,
-  //     DepartamentId: [...questionData.DepartamentId, id],
-  //   });
-  // };
+  const onDepartamentCheck = (identificator) => {
+    console.log("DEPARTAMENT ID: ", identificator);
+    axios
+      .get(
+        `http://localhost:5000/questions/add/${id}/departament/${identificator}`,
+        {
+          headers: {
+            accessToken: localStorage.getItem("accessToken"),
+          },
+        }
+      )
+      .then((response) => {
+        if (response.data.error) {
+          console.log(response.data.error);
+          return;
+        }
+      });
+  };
 
-  // const onDepartamentUncheck = (id) => {
-  //   setQuestionData({
-  //     ...questionData,
-  //     DepartamentId: questionData.DepartamentId.filter((depId) => depId !== id),
-  //   });
-  //   props.setQuestionData({
-  //     ...questionData,
-  //     DepartamentId: questionData.DepartamentId.filter((depId) => depId !== id),
-  //   });
-  // };
+  const onDepartamentUncheck = (identificator) => {
+    console.log("DEPARTAMENT ID: ", identificator);
+    axios
+      .get(
+        `http://localhost:5000/questions/delete/${id}/departament/${identificator}`,
+        {
+          headers: {
+            accessToken: localStorage.getItem("accessToken"),
+          },
+        }
+      )
+      .then((response) => {
+        if (response.data.error) {
+          console.log(response.data.error);
+          return;
+        }
+      });
+  };
 
   return (
     <>
@@ -188,29 +261,31 @@ const QuestionPage = () => {
             </div>
             <div className="checkbox-wrapper__row__column">
               <h4>PAREIGOS</h4>
-              {listOfPositions.length > 0 &&
-                listOfPositions.map((position) => (
+              {newListOfPositions.length > 0 &&
+                newListOfPositions.map((position) => (
                   <FilterCheckBox
                     title={position.title}
                     name={position.title}
                     key={position.id}
                     id={position.id}
-                    //onCheck={onPositionCheck}
-                    //onUncheck={onPositionUncheck}
+                    onCheck={onPositionCheck}
+                    onUncheck={onPositionUncheck}
+                    checked={position.checked}
                   />
                 ))}
             </div>
             <div className="checkbox-wrapper__row__column">
               <h4>DEPARTAMENTAS</h4>
-              {listOfDepartaments.length > 0 &&
-                listOfDepartaments.map((departament) => (
+              {newListOfDepartaments.length > 0 &&
+                newListOfDepartaments.map((departament) => (
                   <FilterCheckBox
                     title={departament.title}
                     name={departament.title}
                     key={departament.id}
                     id={departament.id}
-                    //onCheck={onDepartamentCheck}
-                    //onUncheck={onDepartamentUncheck}
+                    onCheck={onDepartamentCheck}
+                    onUncheck={onDepartamentUncheck}
+                    checked={departament.checked}
                   />
                 ))}
             </div>
