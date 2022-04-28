@@ -1,13 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import DropdownOption from "./DropdownOption/DropdownOption";
 
 const DropdownFilter = ({ title, filters, ...props }) => {
-  const [selectedFilter, setSelectedFilter] = useState("");
+  const [selectedFilter, setSelectedFilter] = useState(null);
 
   const onChange = (e) => {
-    setSelectedFilter(e.target.value);
-    props.setSelectedFilter(e.target.value);
+    setSelectedFilter(e.target.value || null);
+    props.setSelectedFilter(e.target.value || null);
   };
 
   console.log("FILTERS: ", filters);
@@ -16,7 +16,7 @@ const DropdownFilter = ({ title, filters, ...props }) => {
   return (
     <div>
       <div>{title}</div>
-      <select value={selectedFilter} onChange={onChange}>
+      <select value={selectedFilter || ""} onChange={onChange}>
         <option value="">-----</option>
         {filters.map((filter) => (
           <DropdownOption

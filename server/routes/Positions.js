@@ -14,14 +14,6 @@ router.get("/byId/:id", async (req, res) => {
   res.json(position);
 });
 
-// router.get("/:questionId", async (req, res) => {
-//   const questionId = req.params.questionId;
-//   const position = await Positions.findAll({
-//     where: { QuestionId: questionId },
-//   });
-//   res.json(position);
-// });
-
 router.post("/", validateToken, async (req, res) => {
   const position = req.body;
   const newPosition = await Positions.create(position);
@@ -51,6 +43,17 @@ router.put("/:id", validateToken, async (req, res) => {
   });
 
   res.json("UPDATED SUCCESFULLY");
+});
+
+// POSITION QUESTIONS ASSOCIATION:
+router.get("/questions/:PositionId", async (req, res) => {
+  const id = req.params.PositionId;
+  const position = await Positions.findByPk(id);
+  const listOfAssociatedQuestions = await position.getQuestions();
+  const associatedQuestions = listOfAssociatedQuestions.map((questions) => {
+    return questions;
+  });
+  res.json(associatedQuestions);
 });
 
 module.exports = router;

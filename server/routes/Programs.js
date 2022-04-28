@@ -45,4 +45,15 @@ router.put("/:id", validateToken, async (req, res) => {
   res.json("UPDATED SUCCESFULLY");
 });
 
+// PROGRAM QUESTIONS ASSOCIATION:
+router.get("/questions/:ProgramId", async (req, res) => {
+  const id = req.params.ProgramId;
+  const program = await Programs.findByPk(id);
+  const listOfAssociatedQuestions = await program.getQuestions();
+  const associatedQuestions = listOfAssociatedQuestions.map((questions) => {
+    return questions;
+  });
+  res.json(associatedQuestions);
+});
+
 module.exports = router;

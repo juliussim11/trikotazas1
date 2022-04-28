@@ -17,6 +17,7 @@ const Administrator = () => {
   });
   console.log("QUESTION DATA: ", questionData);
   const [listOfQuestions, setListOfQuestions] = useState([]);
+  const [filteredListOfQuestions, setFilteredListOfQuestions] = useState([]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -71,20 +72,28 @@ const Administrator = () => {
     });
   };
 
+  // POSITIONS:
   const [listOfPositions, setListOfPositions] = useState([]);
-  const [selectedPosition, setSelectedPosition] = useState("");
+  const [selectedPosition, setSelectedPosition] = useState(null);
+  const [selectedPositionLoading, setSelectedPositionLoading] = useState(false);
   console.log("SELETED POSITION: ", selectedPosition);
+  // PROGRAMS:
   const [listOfPrograms, setListOfPrograms] = useState([]);
-  const [selectedProgram, setSelectedProgram] = useState("");
+  const [selectedProgram, setSelectedProgram] = useState(null);
+  const [selectedProgramLoading, setSelectedProgramLoading] = useState(false);
   console.log("SELETED PROGRAM: ", selectedProgram);
+  // DEPARTAMENTS:
   const [listOfDepartaments, setListOfDepartaments] = useState([]);
-  const [selectedDepartament, setSelectedDepartament] = useState("");
+  const [selectedDepartament, setSelectedDepartament] = useState(null);
+  const [selectedDepartamentLoading, setSelectedDepartamentLoading] =
+    useState(false);
   console.log("SELETED DEPARTAMENT: ", selectedDepartament);
 
   // GET DATA FROM DB :
   useEffect(() => {
     axios.get("http://localhost:5000/questions").then((response) => {
       setListOfQuestions(response.data);
+      setFilteredListOfQuestions(response.data);
     });
     axios.get("http://localhost:5000/positions").then((response) => {
       setListOfPositions(response.data);
@@ -96,7 +105,143 @@ const Administrator = () => {
       setListOfDepartaments(response.data);
     });
   }, []);
-  console.log(listOfQuestions);
+  console.log("LIST OF QUESTIONS: ", listOfQuestions);
+
+  const onFilterSubmit = (e) => {
+    e.preventDefault();
+    setSelectedProgramLoading(true);
+    setSelectedPositionLoading(true);
+    setSelectedDepartamentLoading(true);
+    if (selectedProgram && !selectedPosition && !selectedDepartament) {
+      axios
+        .get(`http://localhost:5000/programs/questions/${selectedProgram}`)
+        .then((response) => {
+          setFilteredListOfQuestions(
+            listOfQuestions.filter((e) =>
+              response.data.some((item) => item.id !== e.id)
+            )
+          );
+        });
+    }
+    if (selectedProgram && selectedPosition && selectedDepartament) {
+      axios
+        .get(`http://localhost:5000/programs/questions/${selectedProgram}`)
+        .then((response) => {
+          setFilteredListOfQuestions(
+            listOfQuestions.filter((e) =>
+              response.data.some((item) => item.id !== e.id)
+            )
+          );
+          return axios.get(
+            `http://localhost:5000/positions/questions/${selectedPosition}`
+          );
+        })
+        .then((response) => {
+          setFilteredListOfQuestions(
+            filteredListOfQuestions.filter((e) =>
+              response.data.some((item) => item.id !== e.id)
+            )
+          );
+          return axios.get(
+            `http://localhost:5000/departaments/questions/${selectedDepartament}`
+          );
+        })
+        .then((response) => {
+          setFilteredListOfQuestions(
+            filteredListOfQuestions.filter((e) =>
+              response.data.some((item) => item.id !== e.id)
+            )
+          );
+        });
+      // axios
+      //   .get(`http://localhost:5000/positions/questions/${selectedPosition}`)
+      //   .then((response) => {
+      //     setFilteredListOfQuestions(
+      //       filteredListOfQuestions.filter((e) =>
+      //         response.data.some((item) => item.id !== e.id)
+      //       )
+      //     );
+      //   })
+      //   .then(() => setSelectedPositionLoading(false));
+
+      // axios
+      //   .get(
+      //     `http://localhost:5000/departaments/questions/${selectedDepartament}`
+      //   )
+      //   .then((response) => {
+      //     setFilteredListOfQuestions(
+      //       filteredListOfQuestions.filter((e) =>
+      //         response.data.some((item) => item.id !== e.id)
+      //       )
+      //     );
+      //   });
+    }
+    if (!selectedProgram && !selectedPosition && !selectedDepartament) {
+      axios.get("http://localhost:5000/questions").then((response) => {
+        setFilteredListOfQuestions(response.data);
+      });
+    }
+    console.log(
+      "ASASDASDSAD: ",
+      selectedProgram && selectedPosition && selectedDepartament
+    );
+  };
+
+  const onProgramChange = (value) => {
+    setSelectedProgram(value);
+    console.log("SELETED PROGRAM: ", selectedProgram);
+    if (!selectedProgram) {
+      axios.get("http://localhost:5000/questions").then((response) => {
+        setListOfQuestions(response.data);
+      });
+    } else {
+      axios
+        .get(`http://localhost:5000/programs/questions/${selectedProgram}`)
+        .then((response) => {
+          setListOfQuestions(
+            listOfQuestions.filter((e) =>
+              response.data.some((item) => item.id !== e.id)
+            )
+          );
+        });
+    }
+  };
+
+  const onPositionChange = (identificator) => {
+    if (!identificator) {
+      axios.get("http://localhost:5000/questions").then((response) => {
+        setListOfQuestions(response.data);
+      });
+    } else {
+      axios
+        .get(`http://localhost:5000/positions/questions/${identificator}`)
+        .then((response) => {
+          setListOfQuestions(
+            listOfQuestions.filter((e) =>
+              response.data.some((item) => item.id === e.id)
+            )
+          );
+        });
+    }
+  };
+
+  const onDepartamentChange = (identificator) => {
+    if (!identificator) {
+      axios.get("http://localhost:5000/questions").then((response) => {
+        setListOfQuestions(response.data);
+      });
+    } else {
+      axios
+        .get(`http://localhost:5000/departaments/questions/${identificator}`)
+        .then((response) => {
+          setListOfQuestions(
+            listOfQuestions.filter((e) =>
+              response.data.some((item) => item.id === e.id)
+            )
+          );
+        });
+    }
+  };
 
   return (
     <>
@@ -135,24 +280,27 @@ const Administrator = () => {
           button="ADD QUESTION"
         />
       </div>
-      <DropdownFilter
-        title="POSITIONS"
-        filters={listOfPositions}
-        setSelectedFilter={setSelectedPosition}
-      />
-      <DropdownFilter
-        title="PROGRAMS"
-        filters={listOfPrograms}
-        setSelectedFilter={setSelectedProgram}
-      />
-      <DropdownFilter
-        title="DEPARTAMENTS"
-        filters={listOfDepartaments}
-        setSelectedFilter={setSelectedDepartament}
-      />
+      <form onSubmit={onFilterSubmit}>
+        <DropdownFilter
+          title="PROGRAMS"
+          filters={listOfPrograms}
+          setSelectedFilter={setSelectedProgram}
+        />
+        <DropdownFilter
+          title="POSITIONS"
+          filters={listOfPositions}
+          setSelectedFilter={setSelectedPosition}
+        />
+        <DropdownFilter
+          title="DEPARTAMENTS"
+          filters={listOfDepartaments}
+          setSelectedFilter={setSelectedDepartament}
+        />
+        <button>SEARCH</button>
+      </form>
       <div className="questions">
-        {listOfQuestions.length > 0 &&
-          listOfQuestions.map((question) => (
+        {filteredListOfQuestions.length > 0 &&
+          filteredListOfQuestions.map((question) => (
             <QuestionCard
               key={question.id}
               post={question}

@@ -45,4 +45,15 @@ router.put("/:id", validateToken, async (req, res) => {
   res.json("UPDATED SUCCESFULLY");
 });
 
+// DEPARTAMENT QUESTIONS ASSOCIATION:
+router.get("/questions/:DepartamentId", async (req, res) => {
+  const id = req.params.DepartamentId;
+  const departament = await Departaments.findByPk(id);
+  const listOfAssociatedQuestions = await departament.getQuestions();
+  const associatedQuestions = listOfAssociatedQuestions.map((questions) => {
+    return questions;
+  });
+  res.json(associatedQuestions);
+});
+
 module.exports = router;
