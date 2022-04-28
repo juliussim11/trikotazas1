@@ -41,6 +41,7 @@ const Administrator = () => {
           return;
         }
         setListOfQuestions([...listOfQuestions, response.data]);
+        setFilteredListOfQuestions([...listOfQuestions, response.data]);
       });
     resetUserInputs();
   };
@@ -59,6 +60,11 @@ const Administrator = () => {
             return val.id != id;
           })
         );
+        setFilteredListOfQuestions(
+          listOfQuestions.filter((val) => {
+            return val.id != id;
+          })
+        );
       });
   };
 
@@ -66,28 +72,26 @@ const Administrator = () => {
     setQuestionData({
       question: "",
       answer: "",
-      PositionId: [],
-      ProgramId: [],
-      DepartamentId: [],
     });
   };
 
   // POSITIONS:
   const [listOfPositions, setListOfPositions] = useState([]);
   const [selectedPosition, setSelectedPosition] = useState(null);
-  const [selectedPositionLoading, setSelectedPositionLoading] = useState(false);
+  const [positionQuestions, setPositionQuestions] = useState([]);
   console.log("SELETED POSITION: ", selectedPosition);
   // PROGRAMS:
   const [listOfPrograms, setListOfPrograms] = useState([]);
   const [selectedProgram, setSelectedProgram] = useState(null);
-  const [selectedProgramLoading, setSelectedProgramLoading] = useState(false);
+  const [programQuestions, setProgramQuestions] = useState([]);
   console.log("SELETED PROGRAM: ", selectedProgram);
   // DEPARTAMENTS:
   const [listOfDepartaments, setListOfDepartaments] = useState([]);
   const [selectedDepartament, setSelectedDepartament] = useState(null);
-  const [selectedDepartamentLoading, setSelectedDepartamentLoading] =
-    useState(false);
+  const [departamentQuestions, setDepartamentQuestions] = useState([]);
   console.log("SELETED DEPARTAMENT: ", selectedDepartament);
+
+  const [query, setQuery] = useState("");
 
   // GET DATA FROM DB :
   useEffect(() => {
@@ -107,140 +111,105 @@ const Administrator = () => {
   }, []);
   console.log("LIST OF QUESTIONS: ", listOfQuestions);
 
+  useEffect(() => {
+    if (selectedProgram) {
+      axios
+        .get(`http://localhost:5000/programs/questions/${selectedProgram}`)
+        .then((response) => {
+          setProgramQuestions(response.data);
+        });
+    }
+  }, [selectedProgram]);
+  console.log("PROGRAM QUESTIONS: ", positionQuestions);
+
+  useEffect(() => {
+    if (selectedPosition) {
+      axios
+        .get(`http://localhost:5000/positions/questions/${selectedPosition}`)
+        .then((response) => {
+          setPositionQuestions(response.data);
+        });
+    }
+  }, [selectedPosition]);
+  console.log("POSITION QUESTIONS: ", positionQuestions);
+
+  useEffect(() => {
+    if (selectedDepartament) {
+      axios
+        .get(
+          `http://localhost:5000/departaments/questions/${selectedDepartament}`
+        )
+        .then((response) => {
+          setDepartamentQuestions(response.data);
+        });
+    }
+  }, [selectedDepartament]);
+  console.log("DEPARTAMENT QUESTIONS: ", departamentQuestions);
+
   const onFilterSubmit = (e) => {
     e.preventDefault();
-    setSelectedProgramLoading(true);
-    setSelectedPositionLoading(true);
-    setSelectedDepartamentLoading(true);
     if (selectedProgram && !selectedPosition && !selectedDepartament) {
-      axios
-        .get(`http://localhost:5000/programs/questions/${selectedProgram}`)
-        .then((response) => {
-          setFilteredListOfQuestions(
-            listOfQuestions.filter((e) =>
-              response.data.some((item) => item.id !== e.id)
-            )
-          );
-        });
+      setFilteredListOfQuestions(
+        listOfQuestions.filter((e) =>
+          programQuestions.some((item) => item.id === e.id)
+        )
+      );
     }
-    if (selectedProgram && selectedPosition && selectedDepartament) {
-      axios
-        .get(`http://localhost:5000/programs/questions/${selectedProgram}`)
-        .then((response) => {
-          setFilteredListOfQuestions(
-            listOfQuestions.filter((e) =>
-              response.data.some((item) => item.id !== e.id)
-            )
-          );
-          return axios.get(
-            `http://localhost:5000/positions/questions/${selectedPosition}`
-          );
-        })
-        .then((response) => {
-          setFilteredListOfQuestions(
-            filteredListOfQuestions.filter((e) =>
-              response.data.some((item) => item.id !== e.id)
-            )
-          );
-          return axios.get(
-            `http://localhost:5000/departaments/questions/${selectedDepartament}`
-          );
-        })
-        .then((response) => {
-          setFilteredListOfQuestions(
-            filteredListOfQuestions.filter((e) =>
-              response.data.some((item) => item.id !== e.id)
-            )
-          );
-        });
-      // axios
-      //   .get(`http://localhost:5000/positions/questions/${selectedPosition}`)
-      //   .then((response) => {
-      //     setFilteredListOfQuestions(
-      //       filteredListOfQuestions.filter((e) =>
-      //         response.data.some((item) => item.id !== e.id)
-      //       )
-      //     );
-      //   })
-      //   .then(() => setSelectedPositionLoading(false));
-
-      // axios
-      //   .get(
-      //     `http://localhost:5000/departaments/questions/${selectedDepartament}`
-      //   )
-      //   .then((response) => {
-      //     setFilteredListOfQuestions(
-      //       filteredListOfQuestions.filter((e) =>
-      //         response.data.some((item) => item.id !== e.id)
-      //       )
-      //     );
-      //   });
+    if (!selectedProgram && selectedPosition && !selectedDepartament) {
+      setFilteredListOfQuestions(
+        listOfQuestions.filter((e) =>
+          positionQuestions.some((item) => item.id === e.id)
+        )
+      );
+    }
+    if (!selectedProgram && !selectedPosition && selectedDepartament) {
+      setFilteredListOfQuestions(
+        listOfQuestions.filter((e) =>
+          departamentQuestions.some((item) => item.id === e.id)
+        )
+      );
+    }
+    if (selectedProgram && selectedPosition && !selectedDepartament) {
+      setFilteredListOfQuestions(
+        listOfQuestions.filter(
+          (e) =>
+            programQuestions.some((item) => item.id === e.id) &&
+            positionQuestions.some((item) => item.id === e.id)
+        )
+      );
+    }
+    if (selectedProgram && !selectedPosition && selectedDepartament) {
+      setFilteredListOfQuestions(
+        listOfQuestions.filter(
+          (e) =>
+            programQuestions.some((item) => item.id === e.id) &&
+            departamentQuestions.some((item) => item.id === e.id)
+        )
+      );
+    }
+    if (!selectedProgram && selectedPosition && selectedDepartament) {
+      setFilteredListOfQuestions(
+        listOfQuestions.filter(
+          (e) =>
+            positionQuestions.some((item) => item.id === e.id) &&
+            departamentQuestions.some((item) => item.id === e.id)
+        )
+      );
     }
     if (!selectedProgram && !selectedPosition && !selectedDepartament) {
-      axios.get("http://localhost:5000/questions").then((response) => {
-        setFilteredListOfQuestions(response.data);
-      });
+      setFilteredListOfQuestions(listOfQuestions);
     }
-    console.log(
-      "ASASDASDSAD: ",
-      selectedProgram && selectedPosition && selectedDepartament
-    );
-  };
-
-  const onProgramChange = (value) => {
-    setSelectedProgram(value);
-    console.log("SELETED PROGRAM: ", selectedProgram);
-    if (!selectedProgram) {
-      axios.get("http://localhost:5000/questions").then((response) => {
-        setListOfQuestions(response.data);
-      });
-    } else {
-      axios
-        .get(`http://localhost:5000/programs/questions/${selectedProgram}`)
-        .then((response) => {
-          setListOfQuestions(
-            listOfQuestions.filter((e) =>
-              response.data.some((item) => item.id !== e.id)
-            )
-          );
-        });
+    if (selectedProgram && selectedPosition && selectedDepartament) {
+      setFilteredListOfQuestions(
+        listOfQuestions.filter(
+          (e) =>
+            programQuestions.some((item) => item.id === e.id) &&
+            departamentQuestions.some((item) => item.id === e.id) &&
+            positionQuestions.some((item) => item.id === e.id)
+        )
+      );
     }
-  };
-
-  const onPositionChange = (identificator) => {
-    if (!identificator) {
-      axios.get("http://localhost:5000/questions").then((response) => {
-        setListOfQuestions(response.data);
-      });
-    } else {
-      axios
-        .get(`http://localhost:5000/positions/questions/${identificator}`)
-        .then((response) => {
-          setListOfQuestions(
-            listOfQuestions.filter((e) =>
-              response.data.some((item) => item.id === e.id)
-            )
-          );
-        });
-    }
-  };
-
-  const onDepartamentChange = (identificator) => {
-    if (!identificator) {
-      axios.get("http://localhost:5000/questions").then((response) => {
-        setListOfQuestions(response.data);
-      });
-    } else {
-      axios
-        .get(`http://localhost:5000/departaments/questions/${identificator}`)
-        .then((response) => {
-          setListOfQuestions(
-            listOfQuestions.filter((e) =>
-              response.data.some((item) => item.id === e.id)
-            )
-          );
-        });
-    }
+    console.log("ASASDASDSAD: ", filteredListOfQuestions);
   };
 
   return (
@@ -280,6 +249,7 @@ const Administrator = () => {
           button="ADD QUESTION"
         />
       </div>
+      <SearchBar onChange={(e) => setQuery(e.target.value)} />
       <form onSubmit={onFilterSubmit}>
         <DropdownFilter
           title="PROGRAMS"
@@ -300,16 +270,26 @@ const Administrator = () => {
       </form>
       <div className="questions">
         {filteredListOfQuestions.length > 0 &&
-          filteredListOfQuestions.map((question) => (
-            <QuestionCard
-              key={question.id}
-              post={question}
-              linkTo={`question/${question.id}`}
-              handleDelete={() => {
-                handleDelete(question.id);
-              }}
-            />
-          ))}
+          filteredListOfQuestions
+            .filter((question) => {
+              if (query === "") {
+                return question;
+              } else if (
+                question.question.toLowerCase().includes(query.toLowerCase())
+              ) {
+                return question;
+              }
+            })
+            .map((question) => (
+              <QuestionCard
+                key={question.id}
+                post={question}
+                linkTo={`question/${question.id}`}
+                handleDelete={() => {
+                  handleDelete(question.id);
+                }}
+              />
+            ))}
       </div>
     </>
   );
