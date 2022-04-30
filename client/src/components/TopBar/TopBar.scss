@@ -1,4 +1,5 @@
 @import "src/styles/base/colors";
+@import "../../styles/mixins";
 
 .topbar {
   background-color: $color-blue;
@@ -6,6 +7,15 @@
   padding: 10px;
   position: relative;
   width: 100vw;
+
+  @include tablet-s {
+    min-width: 230px;
+    height: 150px;
+  }
+  @include mobile {
+    min-width: 230px;
+    height: 150px;
+  }
 
   &__content {
     align-items: center;
@@ -15,6 +25,17 @@
     justify-content: space-between;
     padding: 0 20px;
     width: 100%;
+
+    @include tablet-s {
+      flex-direction: column;
+      justify-content: center;
+      margin: 15px 0;
+    }
+    @include mobile {
+      flex-direction: column;
+      justify-content: center;
+      margin: 15px 0;
+    }
 
     &__logo {
       justify-self: center;
@@ -32,6 +53,13 @@
     &__invisible-item {
       height: 24px;
       width: 24px;
+
+      @include tablet-s {
+        display: none;
+      }
+      @include mobile {
+        display: none;
+      }
     }
   }
 }

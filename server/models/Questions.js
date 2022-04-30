@@ -28,6 +28,10 @@ module.exports = (sequelize, DataTypes) => {
       className: "Departaments",
       foreignKey: "QuestionId",
     });
+
+    Questions.hasMany(models.Images, {
+      onDelete: "cascade",
+    });
   };
 
   return Questions;

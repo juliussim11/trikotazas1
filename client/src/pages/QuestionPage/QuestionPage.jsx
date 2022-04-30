@@ -6,6 +6,7 @@ import axios from "axios";
 
 const QuestionPage = () => {
   const [questionData, setQuestionData] = useState({});
+  const [images, setImages] = useState([]);
 
   const [listOfPositions, setListOfPositions] = useState([]);
   const [newListOfPositions, setNewListOfPositions] = useState([]);
@@ -24,6 +25,9 @@ const QuestionPage = () => {
   useEffect(() => {
     axios.get(`http://localhost:5000/questions/byId/${id}`).then((response) => {
       setQuestionData(response.data);
+    });
+    axios.get(`http://localhost:5000/images/byId/${id}`).then((response) => {
+      setImages(response.data);
     });
     axios.get("http://localhost:5000/positions").then((response) => {
       setListOfPositions(response.data);
@@ -229,6 +233,29 @@ const QuestionPage = () => {
       });
   };
 
+  const [image, setImage] = useState(null);
+  const selectImage = (e) => {
+    setImage(e.target.files[0]);
+    console.log("IMAGE: ", e.target.files[0]);
+  };
+
+  const imageUpload = (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("image", image);
+    formData.append("QuestionId", id);
+    axios
+      .post("http://localhost:5000/images", formData, {
+        headers: {
+          accessToken: localStorage.getItem("accessToken"),
+        },
+      })
+      .then((response) => {
+        setImages([...images, response.data]);
+      });
+  };
+  console.log("IMAGES: ", images);
+
   return (
     <>
       <form onSubmit={handleSubmit}>
@@ -242,57 +269,65 @@ const QuestionPage = () => {
           value={questionData.answer}
           onChange={handleChange}
         />
-        <div className="checkbox-wrapper">
-          <div className="checkbox-wrapper__row">
-            <div className="checkbox-wrapper__row__column">
-              <h4>PROGRAMOS</h4>
-              {newListOfPrograms.length > 0 &&
-                newListOfPrograms.map((program) => (
-                  <FilterCheckBox
-                    title={program.title}
-                    name={program.title}
-                    id={program.id}
-                    key={program.id}
-                    onCheck={onProgramCheck}
-                    onUncheck={onProgramUncheck}
-                    checked={program.checked}
-                  />
-                ))}
-            </div>
-            <div className="checkbox-wrapper__row__column">
-              <h4>PAREIGOS</h4>
-              {newListOfPositions.length > 0 &&
-                newListOfPositions.map((position) => (
-                  <FilterCheckBox
-                    title={position.title}
-                    name={position.title}
-                    key={position.id}
-                    id={position.id}
-                    onCheck={onPositionCheck}
-                    onUncheck={onPositionUncheck}
-                    checked={position.checked}
-                  />
-                ))}
-            </div>
-            <div className="checkbox-wrapper__row__column">
-              <h4>DEPARTAMENTAS</h4>
-              {newListOfDepartaments.length > 0 &&
-                newListOfDepartaments.map((departament) => (
-                  <FilterCheckBox
-                    title={departament.title}
-                    name={departament.title}
-                    key={departament.id}
-                    id={departament.id}
-                    onCheck={onDepartamentCheck}
-                    onUncheck={onDepartamentUncheck}
-                    checked={departament.checked}
-                  />
-                ))}
-            </div>
-          </div>
-        </div>
         <button>UPDATE</button>
       </form>
+      <div className="checkbox-wrapper">
+        <div className="checkbox-wrapper__row">
+          <div className="checkbox-wrapper__row__column">
+            <h4>PROGRAMOS</h4>
+            {newListOfPrograms.length > 0 &&
+              newListOfPrograms.map((program) => (
+                <FilterCheckBox
+                  title={program.title}
+                  name={program.title}
+                  id={program.id}
+                  key={program.id}
+                  onCheck={onProgramCheck}
+                  onUncheck={onProgramUncheck}
+                  checked={program.checked}
+                />
+              ))}
+          </div>
+          <div className="checkbox-wrapper__row__column">
+            <h4>PAREIGOS</h4>
+            {newListOfPositions.length > 0 &&
+              newListOfPositions.map((position) => (
+                <FilterCheckBox
+                  title={position.title}
+                  name={position.title}
+                  key={position.id}
+                  id={position.id}
+                  onCheck={onPositionCheck}
+                  onUncheck={onPositionUncheck}
+                  checked={position.checked}
+                />
+              ))}
+          </div>
+          <div className="checkbox-wrapper__row__column">
+            <h4>DEPARTAMENTAS</h4>
+            {newListOfDepartaments.length > 0 &&
+              newListOfDepartaments.map((departament) => (
+                <FilterCheckBox
+                  title={departament.title}
+                  name={departament.title}
+                  key={departament.id}
+                  id={departament.id}
+                  onCheck={onDepartamentCheck}
+                  onUncheck={onDepartamentUncheck}
+                  checked={departament.checked}
+                />
+              ))}
+          </div>
+        </div>
+      </div>
+      <form onSubmit={imageUpload} encType="multipart/form-data">
+        <input type="file" name="image" onChange={selectImage} />
+        <button>UPLOAD IMAGE</button>
+      </form>
+      {images.length > 0 &&
+        images.map((image) => (
+          <img src={`http://localhost:5000/${image.image}`} key={image.id} />
+        ))}
     </>
   );
 };
