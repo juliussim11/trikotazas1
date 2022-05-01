@@ -1,20 +1,30 @@
-.dropdown {
-  position: relative;
+@import "src/styles/base/shadows";
+@import "src/styles/base/colors";
+@import "../../styles/mixins";
 
+.dropdown {
   &__title {
     align-items: center;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    position: relative;
   }
 
-  &__field {
+  select {
     border-radius: 10px;
     border: 2px solid darkgray;
     cursor: pointer;
     height: 30px;
     padding: 5px 10px;
     width: 30vw;
+
+    @include tablet-s {
+      min-width: 230px;
+      width: 100%;
+    }
+    @include mobile {
+      min-width: 230px;
+      width: 100%;
+    }
   }
 }

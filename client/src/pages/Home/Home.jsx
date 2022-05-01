@@ -4,123 +4,194 @@ import SearchBar from "../../components/SearchBar/SearchBar";
 import DropdownFilter from "../../components/DropdownFilter/DropdownFilter";
 import Title from "../../components/Title/Title";
 import "./Home.scss";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { Link } from "react-router-dom";
 
 const Home = () => {
+  // QUESTIONS :
+  const [listOfQuestions, setListOfQuestions] = useState([]);
+  const [filteredListOfQuestions, setFilteredListOfQuestions] = useState([]);
+
+  // POSITIONS:
+  const [listOfPositions, setListOfPositions] = useState([]);
+  const [selectedPosition, setSelectedPosition] = useState(null);
+  const [positionQuestions, setPositionQuestions] = useState([]);
+  // PROGRAMS:
+  const [listOfPrograms, setListOfPrograms] = useState([]);
+  const [selectedProgram, setSelectedProgram] = useState(null);
+  const [programQuestions, setProgramQuestions] = useState([]);
+  // DEPARTAMENTS:
+  const [listOfDepartaments, setListOfDepartaments] = useState([]);
+  const [selectedDepartament, setSelectedDepartament] = useState(null);
+  const [departamentQuestions, setDepartamentQuestions] = useState([]);
+
   const [query, setQuery] = useState("");
-  const [programa, setPrograma] = useState("");
-  const [skyrius, setSkyrius] = useState("");
-  const [pareigos, setPareigos] = useState("");
-  const posts = [
-    {
-      id: "1",
-      question: "This first pošt is about React",
-      answer: "aa",
-      programa: "111",
-      skyrius: "1111",
-      pareigos: "11111",
-    },
-    {
-      id: "2",
-      question: "This next post is about Preact",
-      answer: "bb",
-      programa: "111",
-      skyrius: "2222",
-      pareigos: "33333",
-    },
-    {
-      id: "2",
-      question: "This next post is about Preact",
-      answer: "bbb",
-      programa: "222",
-      skyrius: "2222",
-      pareigos: "22222",
-    },
-    {
-      id: "3",
-      question: "We have yet another React post!",
-      answer: "cc",
-      programa: "333",
-      skyrius: "3333",
-      pareigos: "33333",
-    },
-    {
-      id: "4",
-      question: "This is the fourth and final post",
-      answer: "dd",
-      programa: "222",
-      skyrius: "2222",
-      pareigos: "22222",
-    },
-  ];
 
-  const handleProgramaChange = (e) => {
-    setPrograma(e.target.value);
-  };
+  // GET DATA FROM DB :
+  useEffect(() => {
+    axios.get("http://localhost:5000/questions").then((response) => {
+      setListOfQuestions(response.data);
+      setFilteredListOfQuestions(response.data);
+    });
+    axios.get("http://localhost:5000/positions").then((response) => {
+      setListOfPositions(response.data);
+    });
+    axios.get("http://localhost:5000/programs").then((response) => {
+      setListOfPrograms(response.data);
+    });
+    axios.get("http://localhost:5000/departaments").then((response) => {
+      setListOfDepartaments(response.data);
+    });
+  }, []);
+  console.log("LIST OF QUESTIONS: ", listOfQuestions);
 
-  const handleSkyriusChange = (e) => {
-    setSkyrius(e.target.value);
-  };
+  useEffect(() => {
+    if (selectedProgram) {
+      axios
+        .get(`http://localhost:5000/programs/questions/${selectedProgram}`)
+        .then((response) => {
+          setProgramQuestions(response.data);
+        });
+    }
+  }, [selectedProgram]);
+  console.log("PROGRAM QUESTIONS: ", positionQuestions);
 
-  const handlePareigosChange = (e) => {
-    setPareigos(e.target.value);
+  useEffect(() => {
+    if (selectedPosition) {
+      axios
+        .get(`http://localhost:5000/positions/questions/${selectedPosition}`)
+        .then((response) => {
+          setPositionQuestions(response.data);
+        });
+    }
+  }, [selectedPosition]);
+  console.log("POSITION QUESTIONS: ", positionQuestions);
+
+  useEffect(() => {
+    if (selectedDepartament) {
+      axios
+        .get(
+          `http://localhost:5000/departaments/questions/${selectedDepartament}`
+        )
+        .then((response) => {
+          setDepartamentQuestions(response.data);
+        });
+    }
+  }, [selectedDepartament]);
+  console.log("DEPARTAMENT QUESTIONS: ", departamentQuestions);
+
+  const onFilterSubmit = (e) => {
+    e.preventDefault();
+    if (selectedProgram && !selectedPosition && !selectedDepartament) {
+      setFilteredListOfQuestions(
+        listOfQuestions.filter((e) =>
+          programQuestions.some((item) => item.id === e.id)
+        )
+      );
+    }
+    if (!selectedProgram && selectedPosition && !selectedDepartament) {
+      setFilteredListOfQuestions(
+        listOfQuestions.filter((e) =>
+          positionQuestions.some((item) => item.id === e.id)
+        )
+      );
+    }
+    if (!selectedProgram && !selectedPosition && selectedDepartament) {
+      setFilteredListOfQuestions(
+        listOfQuestions.filter((e) =>
+          departamentQuestions.some((item) => item.id === e.id)
+        )
+      );
+    }
+    if (selectedProgram && selectedPosition && !selectedDepartament) {
+      setFilteredListOfQuestions(
+        listOfQuestions.filter(
+          (e) =>
+            programQuestions.some((item) => item.id === e.id) &&
+            positionQuestions.some((item) => item.id === e.id)
+        )
+      );
+    }
+    if (selectedProgram && !selectedPosition && selectedDepartament) {
+      setFilteredListOfQuestions(
+        listOfQuestions.filter(
+          (e) =>
+            programQuestions.some((item) => item.id === e.id) &&
+            departamentQuestions.some((item) => item.id === e.id)
+        )
+      );
+    }
+    if (!selectedProgram && selectedPosition && selectedDepartament) {
+      setFilteredListOfQuestions(
+        listOfQuestions.filter(
+          (e) =>
+            positionQuestions.some((item) => item.id === e.id) &&
+            departamentQuestions.some((item) => item.id === e.id)
+        )
+      );
+    }
+    if (!selectedProgram && !selectedPosition && !selectedDepartament) {
+      setFilteredListOfQuestions(listOfQuestions);
+    }
+    if (selectedProgram && selectedPosition && selectedDepartament) {
+      setFilteredListOfQuestions(
+        listOfQuestions.filter(
+          (e) =>
+            programQuestions.some((item) => item.id === e.id) &&
+            departamentQuestions.some((item) => item.id === e.id) &&
+            positionQuestions.some((item) => item.id === e.id)
+        )
+      );
+    }
   };
 
   return (
     <>
       <TopBar />
-      <Title />
       <SearchBar onChange={(e) => setQuery(e.target.value)} />
-      <div className="filters">
-        <DropdownFilter
-          title="Programa"
-          handleChange={handleProgramaChange}
-          value={programa}
-          filters={posts}
-        />
-        <DropdownFilter
-          title="Skyrius"
-          handleChange={handleSkyriusChange}
-          value={skyrius}
-          filters={posts}
-        />
-        <DropdownFilter
-          title="Pareigos"
-          handleChange={handlePareigosChange}
-          value={pareigos}
-          filters={posts}
-        />
-      </div>
-      {posts
-        .filter((post) => {
-          if (
-            query === "" &&
-            programa === "" &&
-            skyrius === "" &&
-            pareigos === ""
-          ) {
-            //if query is empty
-            return post;
-          } else if (
-            post.question.toLowerCase().includes(query.toLowerCase()) &&
-            post.programa.toLowerCase().includes(programa.toLowerCase()) &&
-            post.skyrius.toLowerCase().includes(skyrius.toLowerCase()) &&
-            post.pareigos.toLowerCase().includes(pareigos.toLowerCase())
-          ) {
-            //returns filtered array
-            return post;
-          }
-        })
-        .map((post) => (
-          <Link to={`/question/${post.id}`} className="link">
-            <QuestionCard
-              key={post.id}
-              post={post}
-              linkTo={`question/${post.id}`}
+      <div className="questions">
+        <div className="filter-wrapper">
+          <form onSubmit={onFilterSubmit}>
+            <DropdownFilter
+              title="PROGRAMS"
+              filters={listOfPrograms}
+              setSelectedFilter={setSelectedProgram}
             />
-          </Link>
-        ))}
+            <DropdownFilter
+              title="POSITIONS"
+              filters={listOfPositions}
+              setSelectedFilter={setSelectedPosition}
+            />
+            <DropdownFilter
+              title="DEPARTAMENTS"
+              filters={listOfDepartaments}
+              setSelectedFilter={setSelectedDepartament}
+            />
+            <button>SEARCH</button>
+          </form>
+        </div>
+      </div>
+      <div className="questions">
+        {filteredListOfQuestions.length > 0 &&
+          filteredListOfQuestions
+            .filter((question) => {
+              if (query === "") {
+                return question;
+              } else if (
+                question.question.toLowerCase().includes(query.toLowerCase())
+              ) {
+                return question;
+              }
+            })
+            .map((question) => (
+              <QuestionCard
+                key={question.id}
+                post={question}
+                linkTo={`/question/${question.id}`}
+              />
+            ))}
+      </div>
     </>
   );
 };

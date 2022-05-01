@@ -9,6 +9,13 @@
   justify-content: center;
   margin-top: 50px;
 
+  @include tablet-s {
+    margin: 15px;
+  }
+  @include mobile {
+    margin: 15px;
+  }
+
   &__input {
     border-radius: 10px;
     border: 2px solid darkgray;

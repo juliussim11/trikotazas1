@@ -51,10 +51,10 @@
   justify-content: center;
 
   @include tablet-s {
-    margin: 10px 30px;
+    margin: 15px;
   }
   @include mobile {
-    margin: 10px 30px;
+    margin: 15px;
   }
 }
 
@@ -64,4 +64,33 @@
   flex-direction: column-reverse;
   justify-content: center;
   text-align: center;
+}
+
+.filter-wrapper {
+  align-items: center;
+  background-color: $color-white;
+  border-radius: 20px;
+  box-shadow: $box-shadow-base;
+  margin-top: 50px;
+  min-width: 230px;
+  padding: 20px;
+  text-align: center;
+  width: 90vw;
+
+  button {
+    border-radius: 7px;
+    border: 1px solid grey;
+    cursor: pointer;
+    margin-top: 20px;
+    padding: 5px;
+  }
+
+  @include tablet-s {
+    margin: 15px;
+    width: 90vw;
+  }
+  @include mobile {
+    margin: 15px;
+    width: 100vw;
+  }
 }

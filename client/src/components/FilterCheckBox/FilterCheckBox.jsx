@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
+import "./FilterCheckBox.scss";
 
 const FilterCheckBox = ({ title, name, id, checked, ...props }) => {
   const [filterChecked, setFilterChecked] = useState(checked);
@@ -15,15 +16,19 @@ const FilterCheckBox = ({ title, name, id, checked, ...props }) => {
   };
 
   return (
-    <div>
-      {title}
-      <input
-        type="checkbox"
-        checked={filterChecked}
-        name={name}
-        id={id}
-        onChange={onChange}
-      />
+    <div className="filter">
+      <div>
+        <span>{title}</span>
+      </div>
+      <div>
+        <input
+          type="checkbox"
+          checked={filterChecked}
+          name={name}
+          id={id}
+          onChange={onChange}
+        />
+      </div>
     </div>
   );
 };

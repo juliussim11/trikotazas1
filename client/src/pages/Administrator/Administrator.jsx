@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import "./Administrator.scss";
-import { Editor } from "@tinymce/tinymce-react";
 import SearchBar from "../../components/SearchBar/SearchBar";
 import TopBar from "../../components/TopBar/TopBar";
 import QuestionCard from "../../components/QuestionCard/QuestionCard";
@@ -250,24 +249,28 @@ const Administrator = () => {
         />
       </div>
       <SearchBar onChange={(e) => setQuery(e.target.value)} />
-      <form onSubmit={onFilterSubmit}>
-        <DropdownFilter
-          title="PROGRAMS"
-          filters={listOfPrograms}
-          setSelectedFilter={setSelectedProgram}
-        />
-        <DropdownFilter
-          title="POSITIONS"
-          filters={listOfPositions}
-          setSelectedFilter={setSelectedPosition}
-        />
-        <DropdownFilter
-          title="DEPARTAMENTS"
-          filters={listOfDepartaments}
-          setSelectedFilter={setSelectedDepartament}
-        />
-        <button>SEARCH</button>
-      </form>
+      <div className="questions">
+        <div className="filter-wrapper">
+          <form onSubmit={onFilterSubmit}>
+            <DropdownFilter
+              title="PROGRAMS"
+              filters={listOfPrograms}
+              setSelectedFilter={setSelectedProgram}
+            />
+            <DropdownFilter
+              title="POSITIONS"
+              filters={listOfPositions}
+              setSelectedFilter={setSelectedPosition}
+            />
+            <DropdownFilter
+              title="DEPARTAMENTS"
+              filters={listOfDepartaments}
+              setSelectedFilter={setSelectedDepartament}
+            />
+            <button>SEARCH</button>
+          </form>
+        </div>
+      </div>
       <div className="questions">
         {filteredListOfQuestions.length > 0 &&
           filteredListOfQuestions
@@ -284,7 +287,7 @@ const Administrator = () => {
               <QuestionCard
                 key={question.id}
                 post={question}
-                linkTo={`question/${question.id}`}
+                linkTo={`/question/${question.id}`}
                 handleDelete={() => {
                   handleDelete(question.id);
                 }}

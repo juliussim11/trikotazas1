@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import DropdownOption from "./DropdownOption/DropdownOption";
+import "./DropdownFilter.scss";
 
 const DropdownFilter = ({ title, filters, ...props }) => {
   const [selectedFilter, setSelectedFilter] = useState(null);
@@ -14,8 +15,8 @@ const DropdownFilter = ({ title, filters, ...props }) => {
   console.log("SELECTED FILTER: ", selectedFilter);
 
   return (
-    <div>
-      <div>{title}</div>
+    <div className="dropdown">
+      <div className="dropdown__title">{title}</div>
       <select value={selectedFilter || ""} onChange={onChange}>
         <option value="">-----</option>
         {filters.map((filter) => (

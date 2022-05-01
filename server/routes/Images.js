@@ -4,6 +4,7 @@ const { Images } = require("../models");
 const { validateToken } = require("../middlewares/AuthMiddleware");
 const multer = require("multer");
 const path = require("path");
+const fs = require("fs");
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -28,8 +29,7 @@ router.get("/byId/:QuestionId", async (req, res) => {
   res.json(image);
 });
 
-router.post("/", upload.single("image"), async (req, res) => {
-  console.log("BODYYYYYYYYYYYYYYYYY: ", req.file);
+router.post("/", upload.single("image"), validateToken, async (req, res) => {
   if (!req.file) {
     console.log("No file upload");
   } else {
@@ -42,14 +42,17 @@ router.post("/", upload.single("image"), async (req, res) => {
   }
 });
 
-router.delete("/:id", validateToken, async (req, res) => {
+router.delete("/:id/:filename", validateToken, async (req, res) => {
   const id = req.params.id;
+  const filename = req.params.filename;
 
   await Images.destroy({
     where: {
       id: id,
     },
   });
+
+  fs.unlinkSync("./Images/" + filename);
 
   res.json("DELETED SUCCESFULLY");
 });

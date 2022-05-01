@@ -1,12 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
 import "./QuestionPage.scss";
 import FilterCheckBox from "../../components/FilterCheckBox/FilterCheckBox";
+import Image from "../../components/Image/Image";
+import { AuthContext } from "../../helpers/AuthContext";
 import axios from "axios";
 
 const QuestionPage = () => {
   const [questionData, setQuestionData] = useState({});
   const [images, setImages] = useState([]);
+
+  const { isLoggedIn } = useContext(AuthContext);
 
   const [listOfPositions, setListOfPositions] = useState([]);
   const [newListOfPositions, setNewListOfPositions] = useState([]);
@@ -256,77 +260,149 @@ const QuestionPage = () => {
   };
   console.log("IMAGES: ", images);
 
+  const onImageDelete = (identificator, filename) => {
+    axios
+      .delete(`http://localhost:5000/images/${identificator}/${filename}`, {
+        headers: {
+          accessToken: localStorage.getItem("accessToken"),
+        },
+      })
+      .then(() => {
+        alert("Question Deleted");
+        setImages(
+          images.filter((val) => {
+            return val.id != identificator;
+          })
+        );
+      });
+  };
+
+  const tx = document.getElementsByTagName("textarea");
+  for (let i = 0; i < tx.length; i++) {
+    tx[i].setAttribute(
+      "style",
+      "height:" + tx[i].scrollHeight + "px;overflow-y:hidden;"
+    );
+    tx[i].addEventListener("input", OnInput, false);
+  }
+
+  function OnInput() {
+    this.style.height = "auto";
+    this.style.height = this.scrollHeight + "px";
+  }
+
   return (
     <>
-      <form onSubmit={handleSubmit}>
-        <textarea
-          name="question"
-          value={questionData.question}
-          onChange={handleChange}
-        />
-        <textarea
-          name="answer"
-          value={questionData.answer}
-          onChange={handleChange}
-        />
-        <button>UPDATE</button>
-      </form>
-      <div className="checkbox-wrapper">
-        <div className="checkbox-wrapper__row">
-          <div className="checkbox-wrapper__row__column">
-            <h4>PROGRAMOS</h4>
-            {newListOfPrograms.length > 0 &&
-              newListOfPrograms.map((program) => (
-                <FilterCheckBox
-                  title={program.title}
-                  name={program.title}
-                  id={program.id}
-                  key={program.id}
-                  onCheck={onProgramCheck}
-                  onUncheck={onProgramUncheck}
-                  checked={program.checked}
+      {isLoggedIn ? (
+        <div className="forms">
+          <div className="question-wrapper">
+            <form onSubmit={handleSubmit}>
+              <div className="question-wrapper__textarea">
+                <textarea
+                  name="question"
+                  value={questionData.question}
+                  onChange={handleChange}
                 />
-              ))}
-          </div>
-          <div className="checkbox-wrapper__row__column">
-            <h4>PAREIGOS</h4>
-            {newListOfPositions.length > 0 &&
-              newListOfPositions.map((position) => (
-                <FilterCheckBox
-                  title={position.title}
-                  name={position.title}
-                  key={position.id}
-                  id={position.id}
-                  onCheck={onPositionCheck}
-                  onUncheck={onPositionUncheck}
-                  checked={position.checked}
+              </div>
+              <div className="question-wrapper__textarea">
+                <textarea
+                  name="answer"
+                  value={questionData.answer}
+                  onChange={handleChange}
                 />
-              ))}
-          </div>
-          <div className="checkbox-wrapper__row__column">
-            <h4>DEPARTAMENTAS</h4>
-            {newListOfDepartaments.length > 0 &&
-              newListOfDepartaments.map((departament) => (
-                <FilterCheckBox
-                  title={departament.title}
-                  name={departament.title}
-                  key={departament.id}
-                  id={departament.id}
-                  onCheck={onDepartamentCheck}
-                  onUncheck={onDepartamentUncheck}
-                  checked={departament.checked}
-                />
-              ))}
+              </div>
+              <div>
+                <button>UPDATE</button>
+              </div>
+            </form>
           </div>
         </div>
-      </div>
-      <form onSubmit={imageUpload} encType="multipart/form-data">
-        <input type="file" name="image" onChange={selectImage} />
-        <button>UPLOAD IMAGE</button>
-      </form>
+      ) : (
+        <div className="forms">
+          <div className="question-wrapper">
+            <h3>{questionData.question}</h3>
+            <div className="question-wrapper__answer">
+              {questionData.answer}
+            </div>
+          </div>
+        </div>
+      )}
+      {isLoggedIn ? (
+        <div className="forms">
+          <div className="checkbox-wrapper">
+            <div className="checkbox-wrapper__row">
+              <div className="checkbox-wrapper__row__column">
+                <h4>PROGRAMOS</h4>
+                {newListOfPrograms.length > 0 &&
+                  newListOfPrograms.map((program) => (
+                    <FilterCheckBox
+                      title={program.title}
+                      name={program.title}
+                      id={program.id}
+                      key={program.id}
+                      onCheck={onProgramCheck}
+                      onUncheck={onProgramUncheck}
+                      checked={program.checked}
+                    />
+                  ))}
+              </div>
+              <div className="checkbox-wrapper__row__column">
+                <h4>PAREIGOS</h4>
+                {newListOfPositions.length > 0 &&
+                  newListOfPositions.map((position) => (
+                    <FilterCheckBox
+                      title={position.title}
+                      name={position.title}
+                      key={position.id}
+                      id={position.id}
+                      onCheck={onPositionCheck}
+                      onUncheck={onPositionUncheck}
+                      checked={position.checked}
+                    />
+                  ))}
+              </div>
+              <div className="checkbox-wrapper__row__column">
+                <h4>DEPARTAMENTAS</h4>
+                {newListOfDepartaments.length > 0 &&
+                  newListOfDepartaments.map((departament) => (
+                    <FilterCheckBox
+                      title={departament.title}
+                      name={departament.title}
+                      key={departament.id}
+                      id={departament.id}
+                      onCheck={onDepartamentCheck}
+                      onUncheck={onDepartamentUncheck}
+                      checked={departament.checked}
+                    />
+                  ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : null}
+      {isLoggedIn ? (
+        <div className="forms">
+          <div className="upload-wrapper">
+            <form onSubmit={imageUpload} encType="multipart/form-data">
+              <div className="upload-wrapper__row">
+                <div className="upload-wrapper__row__file">
+                  <input type="file" name="image" onChange={selectImage} />
+                </div>
+                <div className="upload-wrapper__row__button">
+                  <button>UPLOAD IMAGE</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      ) : null}
       {images.length > 0 &&
         images.map((image) => (
-          <img src={`http://localhost:5000/${image.image}`} key={image.id} />
+          <Image
+            name={image.image}
+            key={image.id}
+            onDelete={() => onImageDelete(image.id, image.image)}
+          />
         ))}
     </>
   );

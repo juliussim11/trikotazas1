@@ -1,0 +1,32 @@
+@import "../../styles/mixins";
+
+.image {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  margin: 20px 0;
+
+  button {
+    border-radius: 7px;
+    border: 1px solid grey;
+    cursor: pointer;
+    padding: 5px;
+  }
+
+  img {
+    min-width: 230px;
+    width: 70vw;
+
+    @include tablet-s {
+      width: 90vw;
+    }
+    @include mobile {
+      width: 100vw;
+    }
+  }
+
+  button {
+    cursor: pointer;
+    position: absolute;
+  }
+}
