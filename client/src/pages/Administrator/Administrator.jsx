@@ -278,7 +278,30 @@ const Administrator = () => {
               if (query === "") {
                 return question;
               } else if (
-                question.question.toLowerCase().includes(query.toLowerCase())
+                question.question
+                  .toLowerCase()
+                  .replace(/[ą]/g, "a")
+                  .replace(/[č]/g, "c")
+                  .replace(/[ę]/g, "e")
+                  .replace(/[ė]/g, "e")
+                  .replace(/[į]/g, "i")
+                  .replace(/[š]/g, "s")
+                  .replace(/[ų]/g, "u")
+                  .replace(/[ū]/g, "u")
+                  .replace(/[ž]/g, "z")
+                  .includes(
+                    query
+                      .toLowerCase()
+                      .replace(/[ą]/g, "a")
+                      .replace(/[č]/g, "c")
+                      .replace(/[ę]/g, "e")
+                      .replace(/[ė]/g, "e")
+                      .replace(/[į]/g, "i")
+                      .replace(/[š]/g, "s")
+                      .replace(/[ų]/g, "u")
+                      .replace(/[ū]/g, "u")
+                      .replace(/[ž]/g, "z")
+                  )
               ) {
                 return question;
               }
