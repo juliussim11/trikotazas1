@@ -72,10 +72,11 @@
   border-radius: 20px;
   box-shadow: $box-shadow-base;
   margin-top: 50px;
+  max-width: 1920px;
   min-width: 230px;
   padding: 20px;
   text-align: center;
-  width: 90vw;
+  width: 90%;
 
   button {
     border-radius: 7px;

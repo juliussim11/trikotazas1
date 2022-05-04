@@ -15,8 +15,9 @@
     border: 2px solid darkgray;
     cursor: pointer;
     height: 30px;
+    max-width: 1920px;
     padding: 5px 10px;
-    width: 30vw;
+    width: 30%;
 
     @include tablet-s {
       min-width: 230px;

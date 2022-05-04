@@ -1,0 +1,31 @@
+@import "../../styles/mixins";
+
+.departaments {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+
+.filter {
+  align-items: center;
+  display: grid;
+  column-gap: 10px;
+  grid-template-columns: repeat(3, 1fr);
+  justify-content: center;
+  row-gap: 10px;
+
+  @include tablet-s {
+    align-items: center;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    justify-content: center;
+  }
+  @include mobile {
+    align-items: center;
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    justify-content: center;
+  }
+}

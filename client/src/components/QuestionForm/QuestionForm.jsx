@@ -20,12 +20,25 @@ const QuestionForm = ({
   answerPlaceholder,
   answerValue,
 }) => {
+  const tx = document.getElementsByTagName("textarea");
+  for (let i = 0; i < tx.length; i++) {
+    tx[i].setAttribute(
+      "style",
+      "height:" + tx[i].scrollHeight + "px;overflow-y:hidden;"
+    );
+    tx[i].addEventListener("input", OnInput, false);
+  }
+
+  function OnInput() {
+    this.style.height = "auto";
+    this.style.height = this.scrollHeight + "px";
+  }
   return (
     <div className="form__wrapper">
       <h2>{formTitle}</h2>
       <form onSubmit={handleSubmit}>
         <h3>{questionTitle}</h3>
-        <input
+        <textarea
           type="text"
           name={questionName}
           placeholder={questionPlaceholder}

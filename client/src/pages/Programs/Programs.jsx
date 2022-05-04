@@ -78,7 +78,7 @@ const Programs = () => {
   };
 
   return (
-    <div>
+    <div className="programs">
       <FilterForm
         title="ADD PROGRAM"
         handleSubmit={handleSubmit}
@@ -88,7 +88,7 @@ const Programs = () => {
         inputValue={program.title}
         onChange={handleChange}
       />
-      <div>
+      <div className="filter">
         {listOfPrograms.length > 0 &&
           listOfPrograms.map((program) => (
             <FilterUpdate

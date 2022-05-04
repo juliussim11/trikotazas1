@@ -8,7 +8,8 @@
     border-radius: 20px;
     box-shadow: $box-shadow-base;
     margin: 50px 20px 0 20px;
-    width: 90vw;
+    max-width: 1920px;
+    width: 90%;
     padding: 20px;
 
     @include tablet-s {

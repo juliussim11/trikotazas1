@@ -24,9 +24,12 @@ function App() {
         {isLoggedIn && (
           <>
             <Route path="/administrator" element={<Administrator />} />
-            <Route path="/positions" element={<Positions />} />
-            <Route path="/programs" element={<Programs />} />
-            <Route path="/departaments" element={<Departaments />} />
+            <Route path="/administrator/positions" element={<Positions />} />
+            <Route path="/administrator/programs" element={<Programs />} />
+            <Route
+              path="/administrator/departaments"
+              element={<Departaments />}
+            />
           </>
         )}
         <Route path="/question/:id" element={<QuestionPage />} />

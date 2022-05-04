@@ -26,7 +26,7 @@ const FilterUpdate = ({
   };
 
   return (
-    <div>
+    <div className="update">
       <input name={name} value={filterData.title} onChange={handleChange} />
       <button onClick={handleDelete}>DELETE</button>
       <button onClick={handleUpdate}>UPDATE</button>

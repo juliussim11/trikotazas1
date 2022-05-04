@@ -78,7 +78,7 @@ const Departaments = () => {
   };
 
   return (
-    <div>
+    <div className="departaments">
       <FilterForm
         title="ADD DEPARTAMENT"
         handleSubmit={handleSubmit}
@@ -88,7 +88,7 @@ const Departaments = () => {
         inputValue={departament.title}
         onChange={handleChange}
       />
-      <div>
+      <div className="filter">
         {listOfDepartaments.length > 0 &&
           listOfDepartaments.map((departament) => (
             <FilterUpdate

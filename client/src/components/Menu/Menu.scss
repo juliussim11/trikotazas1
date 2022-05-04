@@ -1,9 +1,6 @@
 @import "../../styles/mixins";
 
 .menu {
-  position: absolute;
-  right: 30px;
-
   @include tablet-s {
     align-items: center;
     display: flex;

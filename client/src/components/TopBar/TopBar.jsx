@@ -19,10 +19,12 @@ const TopBar = () => {
         <NavLink to="/">
           <img className="topbar__content__logo" src={Logo} />
         </NavLink>
-        <div onClick={handleMenuClick}>
-          <img className="topbar__content__menu" src={MenuIcon} />
+        <div className="topbar__content__menu" onClick={handleMenuClick}>
+          <img src={MenuIcon} />
+          <div className="topbar__content__menu__popup">
+            {menuOpen && <Menu setMenuOpen={setMenuOpen} />}
+          </div>
         </div>
-        {menuOpen && <Menu setMenuOpen={setMenuOpen} />}
       </div>
     </header>
   );

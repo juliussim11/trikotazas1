@@ -1,0 +1,26 @@
+@import "src/styles/base/shadows";
+@import "src/styles/base/colors";
+@import "../../styles/mixins";
+
+.update {
+  align-items: center;
+  background-color: $color-white;
+  border-radius: 20px;
+  box-shadow: $box-shadow-base;
+  min-width: 230px;
+  padding: 20px;
+  width: 100%;
+
+  @include mobile {
+    margin: 10px;
+    width: 100vw;
+  }
+
+  button {
+    border-radius: 7px;
+    border: 1px solid grey;
+    cursor: pointer;
+    margin-right: 5px;
+    padding: 5px;
+  }
+}

@@ -78,7 +78,7 @@ const Positions = () => {
   };
 
   return (
-    <div>
+    <div className="positions">
       <FilterForm
         title="ADD POSITION"
         handleSubmit={handleSubmit}
@@ -88,7 +88,7 @@ const Positions = () => {
         inputValue={position.title}
         onChange={handleChange}
       />
-      <div>
+      <div className="filter">
         {listOfPositions.length > 0 &&
           listOfPositions.map((position) => (
             <FilterUpdate

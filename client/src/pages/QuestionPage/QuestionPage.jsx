@@ -315,6 +315,24 @@ const QuestionPage = () => {
                 <button>UPDATE</button>
               </div>
             </form>
+            <form onSubmit={imageUpload} encType="multipart/form-data">
+              <div className="question-wrapper__row">
+                <div>
+                  <input type="file" name="image" onChange={selectImage} />
+                </div>
+                <div className="upload-wrapper__row__button">
+                  <button>UPLOAD IMAGE</button>
+                </div>
+              </div>
+            </form>
+            {images.length > 0 &&
+              images.map((image) => (
+                <Image
+                  name={image.image}
+                  key={image.id}
+                  onDelete={() => onImageDelete(image.id, image.image)}
+                />
+              ))}
           </div>
         </div>
       ) : (
@@ -324,6 +342,14 @@ const QuestionPage = () => {
             <div className="question-wrapper__answer">
               {questionData.answer}
             </div>
+            {images.length > 0 &&
+              images.map((image) => (
+                <Image
+                  name={image.image}
+                  key={image.id}
+                  onDelete={() => onImageDelete(image.id, image.image)}
+                />
+              ))}
           </div>
         </div>
       )}
@@ -380,30 +406,6 @@ const QuestionPage = () => {
           </div>
         </div>
       ) : null}
-      {isLoggedIn ? (
-        <div className="forms">
-          <div className="upload-wrapper">
-            <form onSubmit={imageUpload} encType="multipart/form-data">
-              <div className="upload-wrapper__row">
-                <div className="upload-wrapper__row__file">
-                  <input type="file" name="image" onChange={selectImage} />
-                </div>
-                <div className="upload-wrapper__row__button">
-                  <button>UPLOAD IMAGE</button>
-                </div>
-              </div>
-            </form>
-          </div>
-        </div>
-      ) : null}
-      {images.length > 0 &&
-        images.map((image) => (
-          <Image
-            name={image.image}
-            key={image.id}
-            onDelete={() => onImageDelete(image.id, image.image)}
-          />
-        ))}
     </>
   );
 };

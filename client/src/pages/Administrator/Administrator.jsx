@@ -6,7 +6,7 @@ import QuestionCard from "../../components/QuestionCard/QuestionCard";
 import QuestionForm from "../../components/QuestionForm/QuestionForm";
 import DropdownFilter from "../../components/DropdownFilter/DropdownFilter";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 
 const Administrator = () => {
   // QUESTIONS :
@@ -216,17 +216,17 @@ const Administrator = () => {
       <TopBar />
       <div className="links">
         <div className="links__wrapper">
-          <Link to={`/positions`}>
+          <Link to="/administrator/positions">
             <h2>POSITIONS</h2>
           </Link>
         </div>
         <div className="links__wrapper">
-          <Link to={`/programs`}>
+          <Link to={`/administrator/programs`}>
             <h2>PROGRAMS</h2>
           </Link>
         </div>
         <div className="links__wrapper">
-          <Link to={`/departaments`}>
+          <Link to={`/administrator/departaments`}>
             <h2>DEPARTAMENTS</h2>
           </Link>
         </div>
