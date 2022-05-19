@@ -31,11 +31,13 @@
 
     @include tablet-s {
       text-align: center;
+      margin-right: -23px;
       right: auto;
       width: 90vw;
     }
     @include mobile {
       text-align: center;
+      margin-right: -23px;
       right: auto;
       width: 100vw;
     }
