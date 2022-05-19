@@ -392,7 +392,7 @@ const QuestionPage = () => {
                   ))}
               </div>
               <div className="checkbox-wrapper__row__column">
-                <h4>DEPARTAMENTAI</h4>
+                <h4>SKYRIAI</h4>
                 {newListOfDepartaments.length > 0 &&
                   newListOfDepartaments.map((departament) => (
                     <FilterCheckBox
