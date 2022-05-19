@@ -77,7 +77,7 @@ const Programs = () => {
         },
       })
       .then(() => {
-        alert("Program Updated");
+        alert("Programa atnaujinta");
       });
   };
 

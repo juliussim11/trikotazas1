@@ -77,7 +77,7 @@ const Positions = () => {
         },
       })
       .then(() => {
-        alert("Program Updated");
+        alert("Pareiga atnaujinta");
       });
   };
 

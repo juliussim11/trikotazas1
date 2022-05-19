@@ -77,7 +77,7 @@ const Departaments = () => {
         },
       })
       .then(() => {
-        alert("Program Updated");
+        alert("Skyrius atnaujintas");
       });
   };
 

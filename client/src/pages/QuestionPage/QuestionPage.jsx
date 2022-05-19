@@ -108,7 +108,7 @@ const QuestionPage = () => {
         },
       })
       .then(() => {
-        alert("Question Updated");
+        alert("Klausimas atnaujintas");
       });
   };
 
@@ -272,7 +272,7 @@ const QuestionPage = () => {
           alert("Paveiksliukas ištrintas");
           setImages(
             images.filter((val) => {
-              return val.id != identificator;
+              return val.id !== identificator;
             })
           );
         });

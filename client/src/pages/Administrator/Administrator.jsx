@@ -54,7 +54,7 @@ const Administrator = () => {
           },
         })
         .then(() => {
-          alert("klausimas ištrintas");
+          alert("Klausimas ištrintas");
           setListOfQuestions(
             listOfQuestions.filter((val) => {
               return val.id != id;
