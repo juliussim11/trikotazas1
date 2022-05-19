@@ -49,20 +49,24 @@ const Programs = () => {
   };
 
   const handleDelete = (id) => {
-    axios
-      .delete(`http://localhost:5000/programs/${id}`, {
-        headers: {
-          accessToken: localStorage.getItem("accessToken"),
-        },
-      })
-      .then(() => {
-        alert("Program Deleted");
-        setListOfPrograms(
-          listOfPrograms.filter((val) => {
-            return val.id != id;
-          })
-        );
-      });
+    if (window.confirm("Ar tikrai norite ištrinti programą?")) {
+      axios
+        .delete(`http://localhost:5000/programs/${id}`, {
+          headers: {
+            accessToken: localStorage.getItem("accessToken"),
+          },
+        })
+        .then(() => {
+          alert("Programa ištrinta");
+          setListOfPrograms(
+            listOfPrograms.filter((val) => {
+              return val.id != id;
+            })
+          );
+        });
+    } else {
+      return;
+    }
   };
 
   const handleUpdate = async (id) => {
@@ -80,11 +84,11 @@ const Programs = () => {
   return (
     <div className="programs">
       <FilterForm
-        title="ADD PROGRAM"
+        title="PRIDĖTI PROGRAMĄ"
         handleSubmit={handleSubmit}
-        button="ADD PROGRAM"
+        button="PRIDĖTI"
         inputName="title"
-        inputPlaceholder="program"
+        inputPlaceholder="programa"
         inputValue={program.title}
         onChange={handleChange}
       />

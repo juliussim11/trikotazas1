@@ -154,21 +154,21 @@ const Home = () => {
         <div className="filter-wrapper">
           <form onSubmit={onFilterSubmit}>
             <DropdownFilter
-              title="PROGRAMS"
+              title="PROGRAMA"
               filters={listOfPrograms}
               setSelectedFilter={setSelectedProgram}
             />
             <DropdownFilter
-              title="POSITIONS"
+              title="PAREIGA"
               filters={listOfPositions}
               setSelectedFilter={setSelectedPosition}
             />
             <DropdownFilter
-              title="DEPARTAMENTS"
+              title="SKYRIUS"
               filters={listOfDepartaments}
               setSelectedFilter={setSelectedDepartament}
             />
-            <button>SEARCH</button>
+            <button>IEŠKOTI</button>
           </form>
         </div>
       </div>

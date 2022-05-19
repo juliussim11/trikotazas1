@@ -36,7 +36,7 @@ const Login = () => {
           <input
             name="username"
             value={values.username}
-            placeholder="Username"
+            placeholder="prisijungimo vardas"
             onChange={handleChange}
           />
         </div>
@@ -45,12 +45,12 @@ const Login = () => {
           <input
             name="password"
             value={values.password}
-            placeholder="Password"
+            placeholder="slaptažodis"
             onChange={handleChange}
           />
         </div>
         <div className="login__form__button">
-          <button>LOGIN</button>
+          <button>PRISIJUNGTI</button>
         </div>
       </form>
     </div>

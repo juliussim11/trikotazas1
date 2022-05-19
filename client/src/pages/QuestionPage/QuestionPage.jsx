@@ -261,20 +261,24 @@ const QuestionPage = () => {
   console.log("IMAGES: ", images);
 
   const onImageDelete = (identificator, filename) => {
-    axios
-      .delete(`http://localhost:5000/images/${identificator}/${filename}`, {
-        headers: {
-          accessToken: localStorage.getItem("accessToken"),
-        },
-      })
-      .then(() => {
-        alert("Question Deleted");
-        setImages(
-          images.filter((val) => {
-            return val.id != identificator;
-          })
-        );
-      });
+    if (window.confirm("Ar tikrai norite ištrinti paveiksliuką?")) {
+      axios
+        .delete(`http://localhost:5000/images/${identificator}/${filename}`, {
+          headers: {
+            accessToken: localStorage.getItem("accessToken"),
+          },
+        })
+        .then(() => {
+          alert("Paveiksliukas ištrintas");
+          setImages(
+            images.filter((val) => {
+              return val.id != identificator;
+            })
+          );
+        });
+    } else {
+      return;
+    }
   };
 
   const tx = document.getElementsByTagName("textarea");
@@ -312,7 +316,7 @@ const QuestionPage = () => {
                 />
               </div>
               <div>
-                <button>UPDATE</button>
+                <button>NAUJINTI</button>
               </div>
             </form>
             <form onSubmit={imageUpload} encType="multipart/form-data">
@@ -321,7 +325,7 @@ const QuestionPage = () => {
                   <input type="file" name="image" onChange={selectImage} />
                 </div>
                 <div className="upload-wrapper__row__button">
-                  <button>UPLOAD IMAGE</button>
+                  <button>PRIDĖTI PAVEIKSLIUKĄ</button>
                 </div>
               </div>
             </form>
@@ -388,7 +392,7 @@ const QuestionPage = () => {
                   ))}
               </div>
               <div className="checkbox-wrapper__row__column">
-                <h4>DEPARTAMENTAS</h4>
+                <h4>DEPARTAMENTAI</h4>
                 {newListOfDepartaments.length > 0 &&
                   newListOfDepartaments.map((departament) => (
                     <FilterCheckBox

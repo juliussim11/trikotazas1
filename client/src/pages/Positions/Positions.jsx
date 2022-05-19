@@ -49,20 +49,24 @@ const Positions = () => {
   };
 
   const handleDelete = (id) => {
-    axios
-      .delete(`http://localhost:5000/positions/${id}`, {
-        headers: {
-          accessToken: localStorage.getItem("accessToken"),
-        },
-      })
-      .then(() => {
-        alert("Program Deleted");
-        setListOfPositions(
-          listOfPositions.filter((val) => {
-            return val.id != id;
-          })
-        );
-      });
+    if (window.confirm("Ar tikrai norite ištrinti pareigą?")) {
+      axios
+        .delete(`http://localhost:5000/positions/${id}`, {
+          headers: {
+            accessToken: localStorage.getItem("accessToken"),
+          },
+        })
+        .then(() => {
+          alert("Pareiga ištrinta");
+          setListOfPositions(
+            listOfPositions.filter((val) => {
+              return val.id != id;
+            })
+          );
+        });
+    } else {
+      return;
+    }
   };
 
   const handleUpdate = async (id) => {
@@ -80,11 +84,11 @@ const Positions = () => {
   return (
     <div className="positions">
       <FilterForm
-        title="ADD POSITION"
+        title="PRIDĖTI PAREIGĄ"
         handleSubmit={handleSubmit}
-        button="ADD POSITION"
+        button="PRIDĖTI"
         inputName="title"
-        inputPlaceholder="position"
+        inputPlaceholder="pareiga"
         inputValue={position.title}
         onChange={handleChange}
       />

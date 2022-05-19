@@ -45,14 +45,19 @@ const Menu = (props) => {
       <ul className="menu__content">
         {!isLoggedIn ? (
           <Link to={`/login`} className="link">
-            <li>Login</li>
+            <li>Prisijungti</li>
           </Link>
         ) : (
-          <button onClick={onLogout}>Logout</button>
+          <button onClick={onLogout}>Atsijungti</button>
         )}
         <Link to={`/userguide`} className="link">
           <li>Naudojimosi gidas</li>
         </Link>
+        {isLoggedIn ? (
+          <Link to={`/administrator`} className="link">
+            <li>Administravimo puslapis</li>
+          </Link>
+        ) : null}
       </ul>
     </div>
   );

@@ -46,25 +46,29 @@ const Administrator = () => {
   };
 
   const handleDelete = (id) => {
-    axios
-      .delete(`http://localhost:5000/questions/${id}`, {
-        headers: {
-          accessToken: localStorage.getItem("accessToken"),
-        },
-      })
-      .then(() => {
-        alert("Question Deleted");
-        setListOfQuestions(
-          listOfQuestions.filter((val) => {
-            return val.id != id;
-          })
-        );
-        setFilteredListOfQuestions(
-          listOfQuestions.filter((val) => {
-            return val.id != id;
-          })
-        );
-      });
+    if (window.confirm("Ar tikrai norite ištrinti klausimą?")) {
+      axios
+        .delete(`http://localhost:5000/questions/${id}`, {
+          headers: {
+            accessToken: localStorage.getItem("accessToken"),
+          },
+        })
+        .then(() => {
+          alert("klausimas ištrintas");
+          setListOfQuestions(
+            listOfQuestions.filter((val) => {
+              return val.id != id;
+            })
+          );
+          setFilteredListOfQuestions(
+            listOfQuestions.filter((val) => {
+              return val.id != id;
+            })
+          );
+        });
+    } else {
+      return;
+    }
   };
 
   const resetUserInputs = () => {
@@ -217,35 +221,35 @@ const Administrator = () => {
       <div className="links">
         <div className="links__wrapper">
           <Link to="/administrator/positions">
-            <h2>POSITIONS</h2>
+            <h2>PAREIGOS</h2>
           </Link>
         </div>
         <div className="links__wrapper">
           <Link to={`/administrator/programs`}>
-            <h2>PROGRAMS</h2>
+            <h2>PROGRAMOS</h2>
           </Link>
         </div>
         <div className="links__wrapper">
           <Link to={`/administrator/departaments`}>
-            <h2>DEPARTAMENTS</h2>
+            <h2>SKYRIAI</h2>
           </Link>
         </div>
       </div>
       <div className="question-forms">
         <QuestionForm
-          formTitle="ADD A QUESTION"
+          formTitle="PRIDĖTI KLAUSIMĄ"
           handleSubmit={onSubmit}
-          questionTitle="QUESTION"
+          questionTitle="KLAUSIMAS"
           questionName="question"
-          questionPlaceholder="question"
+          questionPlaceholder="klausimas"
           questionValue={questionData.question}
           handleQuestionChange={handleChange}
-          answerTitle="ANSWER"
+          answerTitle="ATSAKYMAS"
           answerName="answer"
-          answerPlaceholder="answer"
+          answerPlaceholder="atsakymas"
           answerValue={questionData.answer}
           handleAnswerChange={handleChange}
-          button="ADD QUESTION"
+          button="PRIDĖTI"
         />
       </div>
       <SearchBar onChange={(e) => setQuery(e.target.value)} />
@@ -253,21 +257,21 @@ const Administrator = () => {
         <div className="filter-wrapper">
           <form onSubmit={onFilterSubmit}>
             <DropdownFilter
-              title="PROGRAMS"
+              title="PROGRAMA"
               filters={listOfPrograms}
               setSelectedFilter={setSelectedProgram}
             />
             <DropdownFilter
-              title="POSITIONS"
+              title="PAREIGA"
               filters={listOfPositions}
               setSelectedFilter={setSelectedPosition}
             />
             <DropdownFilter
-              title="DEPARTAMENTS"
+              title="SKYRIUS"
               filters={listOfDepartaments}
               setSelectedFilter={setSelectedDepartament}
             />
-            <button>SEARCH</button>
+            <button>IEŠKOTI</button>
           </form>
         </div>
       </div>

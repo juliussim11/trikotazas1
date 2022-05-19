@@ -28,8 +28,8 @@ const FilterUpdate = ({
   return (
     <div className="update">
       <input name={name} value={filterData.title} onChange={handleChange} />
-      <button onClick={handleDelete}>DELETE</button>
-      <button onClick={handleUpdate}>UPDATE</button>
+      <button onClick={handleDelete}>TRINTI</button>
+      <button onClick={handleUpdate}>NAUJINTI</button>
     </div>
   );
 };

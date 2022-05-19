@@ -14,7 +14,7 @@ const QuestionCard = ({ post, linkTo, handleDelete }) => {
       </Link>
       {isLoggedIn ? (
         <div>
-          <button onClick={handleDelete}>DELETE</button>
+          <button onClick={handleDelete}>TRINTI</button>
         </div>
       ) : null}
     </div>

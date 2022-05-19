@@ -49,20 +49,24 @@ const Departaments = () => {
   };
 
   const handleDelete = (id) => {
-    axios
-      .delete(`http://localhost:5000/departaments/${id}`, {
-        headers: {
-          accessToken: localStorage.getItem("accessToken"),
-        },
-      })
-      .then(() => {
-        alert("Program Deleted");
-        setListOfDepartaments(
-          listOfDepartaments.filter((val) => {
-            return val.id != id;
-          })
-        );
-      });
+    if (window.confirm("Ar tikrai norite ištrinti skyrių?")) {
+      axios
+        .delete(`http://localhost:5000/departaments/${id}`, {
+          headers: {
+            accessToken: localStorage.getItem("accessToken"),
+          },
+        })
+        .then(() => {
+          alert("Skyrius ištrintas");
+          setListOfDepartaments(
+            listOfDepartaments.filter((val) => {
+              return val.id != id;
+            })
+          );
+        });
+    } else {
+      return;
+    }
   };
 
   const handleUpdate = async (id) => {
@@ -80,11 +84,11 @@ const Departaments = () => {
   return (
     <div className="departaments">
       <FilterForm
-        title="ADD DEPARTAMENT"
+        title="PRIDĖTI SKYRIŲ"
         handleSubmit={handleSubmit}
-        button="ADD DEPARTAMENT"
+        button="PRIDĖTI"
         inputName="title"
-        inputPlaceholder="departament"
+        inputPlaceholder="skyrius"
         inputValue={departament.title}
         onChange={handleChange}
       />
