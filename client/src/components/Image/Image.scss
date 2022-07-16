@@ -6,13 +6,6 @@
   flex-direction: column;
   margin: 20px 0;
 
-  button {
-    border-radius: 7px;
-    border: 1px solid grey;
-    cursor: pointer;
-    padding: 5px;
-  }
-
   img {
     max-width: 1920px;
     min-width: 230px;
@@ -25,9 +18,17 @@
       width: 100vw;
     }
   }
+}
 
-  button {
-    cursor: pointer;
-    position: absolute;
-  }
+.img-delete {
+  background-color: transparent;
+  background-image: url("../../assets/delete_icon.svg");
+  background-repeat: no-repeat;
+  border: none;
+  cursor: pointer;
+  height: 30px;
+  padding: 5px;
+  position: absolute;
+  width: 30px;
+  background-size: 100%;
 }

@@ -17,10 +17,10 @@ const TopBar = () => {
       <div className="topbar__content">
         <div className="topbar__content__invisible-item" />
         <NavLink to="/">
-          <img className="topbar__content__logo" src={Logo} />
+          <img className="topbar__content__logo" src={Logo} alt="Logo" />
         </NavLink>
         <div className="topbar__content__menu" onClick={handleMenuClick}>
-          <img src={MenuIcon} />
+          <img src={MenuIcon} alt="Menu" />
           <div className="topbar__content__menu__popup">
             {menuOpen && <Menu setMenuOpen={setMenuOpen} />}
           </div>

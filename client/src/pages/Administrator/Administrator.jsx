@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import "./Administrator.scss";
 import SearchBar from "../../components/SearchBar/SearchBar";
-import TopBar from "../../components/TopBar/TopBar";
 import QuestionCard from "../../components/QuestionCard/QuestionCard";
 import QuestionForm from "../../components/QuestionForm/QuestionForm";
-import DropdownFilter from "../../components/DropdownFilter/DropdownFilter";
+import Pagination from "../../components/Pagination/Pagination";
 import axios from "axios";
-import { Link, Outlet } from "react-router-dom";
+import { Link } from "react-router-dom";
+import DropdownSearch from "../../components/DropdownSearch/DropdownSearch";
 
 const Administrator = () => {
   // QUESTIONS :
@@ -17,6 +17,11 @@ const Administrator = () => {
   console.log("QUESTION DATA: ", questionData);
   const [listOfQuestions, setListOfQuestions] = useState([]);
   const [filteredListOfQuestions, setFilteredListOfQuestions] = useState([]);
+
+  // PAGINATION :
+  const [currentPage, setCurrentPage] = useState(1);
+  const [currentItems, setCurrentItems] = useState([]);
+  const [itemsPerPage] = useState(5);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -215,9 +220,24 @@ const Administrator = () => {
     console.log("ASASDASDSAD: ", filteredListOfQuestions);
   };
 
+  useEffect(() => {
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    if (filteredListOfQuestions.length < indexOfFirstItem) {
+      setCurrentPage(1);
+    } else {
+      setCurrentItems(
+        filteredListOfQuestions.slice(indexOfFirstItem, indexOfLastItem)
+      );
+    }
+  }, [filteredListOfQuestions, currentPage]);
+
+  const paginate = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
   return (
     <>
-      <TopBar />
       <div className="links">
         <div className="links__wrapper">
           <Link to="/administrator/positions">
@@ -254,30 +274,19 @@ const Administrator = () => {
       </div>
       <SearchBar onChange={(e) => setQuery(e.target.value)} />
       <div className="questions">
-        <div className="filter-wrapper">
-          <form onSubmit={onFilterSubmit}>
-            <DropdownFilter
-              title="PROGRAMA"
-              filters={listOfPrograms}
-              setSelectedFilter={setSelectedProgram}
-            />
-            <DropdownFilter
-              title="PAREIGA"
-              filters={listOfPositions}
-              setSelectedFilter={setSelectedPosition}
-            />
-            <DropdownFilter
-              title="SKYRIUS"
-              filters={listOfDepartaments}
-              setSelectedFilter={setSelectedDepartament}
-            />
-            <button>IEŠKOTI</button>
-          </form>
-        </div>
+        <DropdownSearch
+          onFilterSubmit={onFilterSubmit}
+          listOfPrograms={listOfPrograms}
+          setSelectedProgram={setSelectedProgram}
+          listOfPositions={listOfPositions}
+          setSelectedPosition={setSelectedPosition}
+          listOfDepartaments={listOfDepartaments}
+          setSelectedDepartament={setSelectedDepartament}
+        />
       </div>
       <div className="questions">
-        {filteredListOfQuestions.length > 0 &&
-          filteredListOfQuestions
+        {currentItems.length > 0 &&
+          currentItems
             .filter((question) => {
               if (query === "") {
                 return question;
@@ -320,6 +329,12 @@ const Administrator = () => {
                 }}
               />
             ))}
+        <Pagination
+          itemsPerPage={itemsPerPage}
+          totalItems={filteredListOfQuestions.length}
+          currentPage={currentPage}
+          handlePageChange={paginate}
+        />
       </div>
     </>
   );

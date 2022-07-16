@@ -16,11 +16,16 @@
     width: 100vw;
   }
 
-  button {
-    border-radius: 7px;
-    border: 1px solid grey;
-    cursor: pointer;
-    margin-right: 5px;
-    padding: 5px;
+  &__action {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
+    button {
+      border: none;
+      cursor: pointer;
+      padding: 5px;
+      width: 30px;
+    }
   }
 }

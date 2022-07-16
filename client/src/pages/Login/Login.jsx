@@ -10,7 +10,7 @@ const Login = () => {
   });
   const [submitted, setSubmitted] = useState(false);
 
-  const { login } = useContext(AuthContext);
+  const { login, valid } = useContext(AuthContext);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -30,25 +30,28 @@ const Login = () => {
   return (
     <div className="login">
       <form onSubmit={handleSubmit} className="login__form">
-        {submitted ? <Navigate to="/administrator" /> : null}
-        <div className="login__form__input">
-          <div>PRISIJUNGIMO VARDAS</div>
+        {submitted && valid ? <Navigate to="/administrator" /> : null}
+        <label className="login__form__label">
+          PRISIJUNGIMO VARDAS <br />
           <input
+            className="login__form__input"
             name="username"
             value={values.username}
             placeholder="prisijungimo vardas"
             onChange={handleChange}
           />
-        </div>
-        <div className="login__form__input">
-          <div>SLAPTAŽODIS</div>
+        </label>
+        <label className="login__form__label">
+          SLAPTAŽODIS <br />
           <input
+            className="login__form__input"
+            type="password"
             name="password"
             value={values.password}
             placeholder="slaptažodis"
             onChange={handleChange}
           />
-        </div>
+        </label>
         <div className="login__form__button">
           <button>PRISIJUNGTI</button>
         </div>

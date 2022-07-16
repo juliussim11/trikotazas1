@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
+import Button from "../Button/Button";
 import "./FilterForm.scss";
 
 const FilterForm = ({
@@ -11,7 +11,6 @@ const FilterForm = ({
   inputPlaceholder,
   inputValue,
   onChange,
-  linkTo,
 }) => {
   return (
     <div className="form__wrapper">
@@ -25,7 +24,7 @@ const FilterForm = ({
           onChange={onChange}
         />
         <div className="form__wrapper__button">
-          <button>{button}</button>
+          <Button type="submit">{button}</Button>
         </div>
       </form>
     </div>

@@ -2,6 +2,7 @@ import Home from "./pages/Home/Home";
 import QuestionPage from "./pages/QuestionPage/QuestionPage";
 import React, { useContext } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Layout from "./components/Layout/Layout";
 import PageNotFound from "./pages/PageNotFound/PageNotFound";
 import Login from "./pages/Login/Login";
 import Naudojimasis from "./pages/Naudojimasis/Naudojimasis";
@@ -17,22 +18,24 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="*" element={<PageNotFound />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/userguide" element={<Naudojimasis />} />
-        {isLoggedIn && (
-          <>
-            <Route path="/administrator" element={<Administrator />} />
-            <Route path="/administrator/positions" element={<Positions />} />
-            <Route path="/administrator/programs" element={<Programs />} />
-            <Route
-              path="/administrator/departaments"
-              element={<Departaments />}
-            />
-          </>
-        )}
-        <Route path="/question/:id" element={<QuestionPage />} />
+        <Route element={<Layout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="*" element={<PageNotFound />} />
+          <Route path="/userguide" element={<Naudojimasis />} />
+          {isLoggedIn && (
+            <>
+              <Route path="/administrator" element={<Administrator />} />
+              <Route path="/administrator/positions" element={<Positions />} />
+              <Route path="/administrator/programs" element={<Programs />} />
+              <Route
+                path="/administrator/departaments"
+                element={<Departaments />}
+              />
+            </>
+          )}
+          <Route path="/question/:id" element={<QuestionPage />} />
+        </Route>
       </Routes>
     </Router>
   );

@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import "./QuestionCard.scss";
 import { AuthContext } from "../../helpers/AuthContext";
+import DeleteIcon from "../../assets/delete_icon.svg";
 
 const QuestionCard = ({ post, linkTo, handleDelete }) => {
   const { isLoggedIn } = useContext(AuthContext);
@@ -14,7 +15,9 @@ const QuestionCard = ({ post, linkTo, handleDelete }) => {
       </Link>
       {isLoggedIn ? (
         <div>
-          <button onClick={handleDelete}>TRINTI</button>
+          <button onClick={handleDelete}>
+            <img src={DeleteIcon} alt="Delete" />
+          </button>
         </div>
       ) : null}
     </div>

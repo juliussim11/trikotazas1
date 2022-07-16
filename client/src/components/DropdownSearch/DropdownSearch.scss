@@ -2,24 +2,6 @@
 @import "src/styles/base/colors";
 @import "src/styles/base/shadows";
 
-.filters {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  margin-top: 50px;
-  padding: 0 20px;
-  position: relative;
-}
-
-.questions {
-  align-items: center;
-  display: flex;
-  flex-direction: column-reverse;
-  justify-content: center;
-  text-align: center;
-}
-
 .filter-wrapper {
   align-items: center;
   background-color: $color-white;

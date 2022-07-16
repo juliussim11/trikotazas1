@@ -1,8 +1,7 @@
 import React from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import PropTypes from "prop-types";
-import FilterCheckBox from "../FilterCheckBox/FilterCheckBox";
-import axios from "axios";
+import Button from "../Button/Button";
 import "./QuestionForm.scss";
 
 const QuestionForm = ({
@@ -37,25 +36,29 @@ const QuestionForm = ({
     <div className="form__wrapper">
       <h2>{formTitle}</h2>
       <form onSubmit={handleSubmit}>
-        <h3>{questionTitle}</h3>
-        <textarea
-          type="text"
-          name={questionName}
-          placeholder={questionPlaceholder}
-          value={questionValue}
-          onChange={handleQuestionChange}
-        />
-        <div>
-          <h3>{answerTitle}</h3>
+        <label className="form__wrapper__label">
+          {questionTitle}
           <textarea
-            name={answerName}
-            placeholder={answerPlaceholder}
-            value={answerValue}
-            onChange={handleAnswerChange}
+            type="text"
+            name={questionName}
+            placeholder={questionPlaceholder}
+            value={questionValue}
+            onChange={handleQuestionChange}
           />
+        </label>
+        <div>
+          <label className="form__wrapper__label">
+            {answerTitle}
+            <textarea
+              name={answerName}
+              placeholder={answerPlaceholder}
+              value={answerValue}
+              onChange={handleAnswerChange}
+            />
+          </label>
         </div>
         <div className="form__wrapper__button">
-          <button>{button}</button>
+          <Button type="submit">{button}</Button>
         </div>
       </form>
     </div>

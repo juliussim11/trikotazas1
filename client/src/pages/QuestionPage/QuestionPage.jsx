@@ -4,6 +4,8 @@ import "./QuestionPage.scss";
 import FilterCheckBox from "../../components/FilterCheckBox/FilterCheckBox";
 import Image from "../../components/Image/Image";
 import { AuthContext } from "../../helpers/AuthContext";
+import SaveIcon from "../../assets/save.svg";
+import Button from "../../components/Button/Button";
 import axios from "axios";
 
 const QuestionPage = () => {
@@ -315,8 +317,11 @@ const QuestionPage = () => {
                   onChange={handleChange}
                 />
               </div>
-              <div>
-                <button>NAUJINTI</button>
+              <div className="question-wrapper__save">
+                <button>
+                  SAVE
+                  <img src={SaveIcon} alt="Save" />
+                </button>
               </div>
             </form>
             <form onSubmit={imageUpload} encType="multipart/form-data">
@@ -324,8 +329,8 @@ const QuestionPage = () => {
                 <div>
                   <input type="file" name="image" onChange={selectImage} />
                 </div>
-                <div className="upload-wrapper__row__button">
-                  <button>PRIDĖTI PAVEIKSLIUKĄ</button>
+                <div>
+                  <Button type="submit">PRIDĖTI PAVEIKSLIUKĄ</Button>
                 </div>
               </div>
             </form>

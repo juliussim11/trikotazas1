@@ -9,6 +9,7 @@ const AuthContext = createContext({
 
 const AuthContextProvider = (props) => {
   const [userIsLoggedIn, setUserIsLoggedIn] = useState(false);
+  const [valid, setValid] = useState(false);
 
   const handleLogin = (data) => {
     axios
@@ -18,6 +19,7 @@ const AuthContextProvider = (props) => {
           alert(response.data.error);
         } else {
           localStorage.setItem("accessToken", response.data);
+          setValid(true)
         }
       });
     setUserIsLoggedIn(true);
@@ -29,6 +31,7 @@ const AuthContextProvider = (props) => {
   };
 
   const contextValue = {
+    valid,
     isLoggedIn: userIsLoggedIn,
     login: handleLogin,
     logout: handleLogout,

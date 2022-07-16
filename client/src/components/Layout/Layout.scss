@@ -1,0 +1,23 @@
+@import "../../styles/base/base";
+@import "../../styles/mixins";
+@import "../../styles/base/config";
+
+.layout {
+  background-color: $color-bg-container;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 100vh;
+}
+
+.container {
+  flex-grow: 1;
+  padding: 48px;
+  @include mobile {
+    padding: 24px;
+  }
+
+  &__content {
+    @include restrict-block-to-max-width($max-page-width);
+  }
+}

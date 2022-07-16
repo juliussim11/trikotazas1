@@ -1,17 +1,20 @@
-import TopBar from "../../components/TopBar/TopBar";
 import QuestionCard from "../../components/QuestionCard/QuestionCard";
 import SearchBar from "../../components/SearchBar/SearchBar";
-import DropdownFilter from "../../components/DropdownFilter/DropdownFilter";
 import Title from "../../components/Title/Title";
 import "./Home.scss";
+import DropdownSearch from "../../components/DropdownSearch/DropdownSearch";
 import React, { useState, useEffect } from "react";
+import Pagination from "../../components/Pagination/Pagination";
 import axios from "axios";
-import { Link } from "react-router-dom";
 
 const Home = () => {
   // QUESTIONS :
   const [listOfQuestions, setListOfQuestions] = useState([]);
   const [filteredListOfQuestions, setFilteredListOfQuestions] = useState([]);
+  // PAGINATION :
+  const [currentPage, setCurrentPage] = useState(1);
+  const [currentItems, setCurrentItems] = useState([]);
+  const [itemsPerPage] = useState(5);
 
   // POSITIONS:
   const [listOfPositions, setListOfPositions] = useState([]);
@@ -146,35 +149,67 @@ const Home = () => {
     }
   };
 
+  const handleDelete = (id) => {
+    if (window.confirm("Ar tikrai norite ištrinti klausimą?")) {
+      axios
+        .delete(`http://localhost:5000/questions/${id}`, {
+          headers: {
+            accessToken: localStorage.getItem("accessToken"),
+          },
+        })
+        .then(() => {
+          alert("Klausimas ištrintas");
+          setListOfQuestions(
+            listOfQuestions.filter((val) => {
+              return val.id != id;
+            })
+          );
+          setFilteredListOfQuestions(
+            listOfQuestions.filter((val) => {
+              return val.id != id;
+            })
+          );
+        });
+    } else {
+      return;
+    }
+  };
+
+  useEffect(() => {
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    if (filteredListOfQuestions.length < indexOfFirstItem) {
+      setCurrentPage(1);
+    } else {
+      setCurrentItems(
+        filteredListOfQuestions
+          .reverse()
+          .slice(indexOfFirstItem, indexOfLastItem)
+      );
+    }
+  }, [filteredListOfQuestions, currentPage]);
+
+  const paginate = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
   return (
     <>
-      <TopBar />
       <SearchBar onChange={(e) => setQuery(e.target.value)} />
       <div className="questions">
-        <div className="filter-wrapper">
-          <form onSubmit={onFilterSubmit}>
-            <DropdownFilter
-              title="PROGRAMA"
-              filters={listOfPrograms}
-              setSelectedFilter={setSelectedProgram}
-            />
-            <DropdownFilter
-              title="PAREIGA"
-              filters={listOfPositions}
-              setSelectedFilter={setSelectedPosition}
-            />
-            <DropdownFilter
-              title="SKYRIUS"
-              filters={listOfDepartaments}
-              setSelectedFilter={setSelectedDepartament}
-            />
-            <button>IEŠKOTI</button>
-          </form>
-        </div>
+        <DropdownSearch
+          onFilterSubmit={onFilterSubmit}
+          listOfPrograms={listOfPrograms}
+          setSelectedProgram={setSelectedProgram}
+          listOfPositions={listOfPositions}
+          setSelectedPosition={setSelectedPosition}
+          listOfDepartaments={listOfDepartaments}
+          setSelectedDepartament={setSelectedDepartament}
+        />
       </div>
       <div className="questions">
-        {filteredListOfQuestions.length > 0 &&
-          filteredListOfQuestions
+        {currentItems.length > 0 &&
+          currentItems
             .filter((question) => {
               if (query === "") {
                 return question;
@@ -214,8 +249,17 @@ const Home = () => {
                 key={question.id}
                 post={question}
                 linkTo={`/question/${question.id}`}
+                handleDelete={() => {
+                  handleDelete(question.id);
+                }}
               />
             ))}
+        <Pagination
+          itemsPerPage={itemsPerPage}
+          totalItems={filteredListOfQuestions.length}
+          currentPage={currentPage}
+          handlePageChange={paginate}
+        />
       </div>
     </>
   );

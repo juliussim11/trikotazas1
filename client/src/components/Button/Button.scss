@@ -1,0 +1,24 @@
+@import "src/styles/base/colors";
+
+$color-add-hover: darken($color-button-add, 5%);
+$color-add-active: desaturate($color-button-add, 50%);
+
+.button {
+  background-color: $color-button-add;
+  border: none;
+  border-radius: 7px;
+  color: $color-white;
+  cursor: pointer;
+  font-weight: 500;
+  padding: 5px;
+  text-transform: uppercase;
+
+  &:focus,
+  &:hover {
+    background-color: $color-add-hover;
+  }
+
+  &:active {
+    background-color: $color-add-active;
+  }
+}

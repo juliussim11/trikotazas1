@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import "./FilterUpdate.scss";
+import DeleteIcon from "../../assets/delete_icon.svg";
+import SaveIcon from "../../assets/check_icon.svg";
 
 const FilterUpdate = ({
   initialValue,
@@ -28,8 +30,14 @@ const FilterUpdate = ({
   return (
     <div className="update">
       <input name={name} value={filterData.title} onChange={handleChange} />
-      <button onClick={handleDelete}>TRINTI</button>
-      <button onClick={handleUpdate}>NAUJINTI</button>
+      <div className="update__action">
+        <button onClick={handleDelete}>
+          <img src={DeleteIcon} alt="Delete" />
+        </button>
+        <button onClick={handleUpdate}>
+          <img src={SaveIcon} alt="Save" />
+        </button>
+      </div>
     </div>
   );
 };
